@@ -273,8 +273,9 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
       layer.current.dataset.closeDeadline = deadline.toFixed(2);
     let cancelled = false,
       expired = false,
-      exitAnimation;
-    let timer, interval;
+      exitAnimation,
+      didClose = false;
+    let timer, interval, exitTimer;
     const finish = () => {
       if (cancelled || expired) return;
       expired = true;
@@ -282,10 +283,13 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
       clearInterval(interval);
       setSeconds(0);
       const close = () => {
-        if (!cancelled) onCloseRef.current?.({ reason: "timeout" });
+        if (cancelled || didClose) return;
+        didClose = true;
+        clearTimeout(exitTimer);
+        onCloseRef.current?.({ reason: "timeout" });
       };
       if (motionReducedRef.current || document.hidden) close();
-      else
+      else {
         exitAnimation = gsap.to(face.current, {
           opacity: 0,
           y: 7,
@@ -294,6 +298,9 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
           onComplete: close,
           overwrite: true,
         });
+        // Dismissal is functional: it must complete even if animation frames stall.
+        exitTimer = setTimeout(close, 250);
+      }
     };
     const tick = () => {
       if (cancelled || expired) return;
@@ -312,6 +319,7 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
       cancelled = true;
       clearTimeout(timer);
       clearInterval(interval);
+      clearTimeout(exitTimer);
       exitAnimation?.kill();
     };
   }, [machineId, machine, pinned, shown]);

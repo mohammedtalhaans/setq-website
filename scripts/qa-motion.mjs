@@ -6,6 +6,8 @@ import { performance } from "node:perf_hooks";
 const baseURL = process.env.SETQ_QA_URL || "http://127.0.0.1:13073/";
 const output = "output/motion-qa";
 const results = [];
+const timerMappings = new WeakMap();
+const timerSnapshots = [];
 const caseFilter = process.env.SETQ_QA_CASE?.toLowerCase() || "";
 const browser = await chromium.launch({
   headless: true,
@@ -135,14 +137,61 @@ async function timerOrigin(page, previousDeadline = 0) {
     );
     return Number.isFinite(value) && value > previous;
   }, previousDeadline);
+  const sentAt = performance.now();
   const clock = await card(page).evaluate((layer) => ({
     deadline: Number(layer.dataset.closeDeadline),
     now: performance.now(),
     click: window.__qaLastControlClickAt,
   }));
+  const receivedAt = performance.now();
   // The product begins ten seconds after its first valid visible projection.
   // Read that native deadline without mutating or replacing any browser clock.
-  return performance.now() - (clock.now - (clock.deadline - 10000));
+  const origin = receivedAt - (clock.now - (clock.deadline - 10000));
+  timerMappings.set(page, {
+    deadline: clock.deadline,
+    browserNow: clock.now,
+    nodeSentAt: sentAt,
+    nodeReceivedAt: receivedAt,
+    roundTripMs: receivedAt - sentAt,
+    origin,
+    visibleAfterClickMs: clock.deadline - 10000 - clock.click,
+  });
+  return origin;
+}
+async function readTimerState(page, startedAt, stage) {
+  const native = await page.evaluate(() => {
+    const layer = document.querySelector("[data-equipment-card]");
+    const face = layer?.querySelector(".machine-annotation__surface");
+    const clock = layer?.querySelector("[data-countdown-seconds]");
+    return {
+      browserNow: performance.now(),
+      deadline: layer ? Number(layer.dataset.closeDeadline) : null,
+      seconds: clock?.getAttribute("data-countdown-seconds") ?? null,
+      secondsText: clock?.textContent ?? null,
+      cardMounted: Boolean(layer),
+      visible: layer ? getComputedStyle(layer).visibility : null,
+      pinned: layer?.dataset.pinned ?? null,
+      opacity: face ? Number(getComputedStyle(face).opacity) : null,
+      faceTransform: face ? getComputedStyle(face).transform : null,
+      bobOffset: layer?.dataset.bobOffset ?? null,
+      hidden: document.hidden,
+      visibilityState: document.visibilityState,
+    };
+  });
+  const mapping = timerMappings.get(page);
+  const nativeDeadline = native.deadline ?? mapping?.deadline;
+  const snapshot = {
+    stage,
+    nodeElapsedMs: performance.now() - startedAt,
+    browserElapsedMs: native.browserNow - (nativeDeadline - 10000),
+    nativeRemainingMs: nativeDeadline - native.browserNow,
+    deadlineDeltaMs:
+      native.deadline === null ? null : native.deadline - mapping.deadline,
+    ...native,
+    mapping,
+  };
+  timerSnapshots.push(snapshot);
+  return snapshot;
 }
 async function releaseInteraction(page) {
   await page.mouse.move(0, 0);
@@ -153,7 +202,13 @@ async function waitUntil(page, startedAt, elapsed) {
   if (remaining > 0) await page.waitForTimeout(remaining);
 }
 async function waitClosed(page, startedAt) {
-  await card(page).waitFor({ state: "detached", timeout: 2500 });
+  try {
+    await card(page).waitFor({ state: "detached", timeout: 2500 });
+  } catch (error) {
+    const snapshot = await readTimerState(page, startedAt, "close-wait-failed");
+    error.message += `\nNative timer state: ${JSON.stringify(snapshot)}`;
+    throw error;
+  }
   const elapsed = performance.now() - startedAt;
   assert.ok(
     elapsed >= 9800 && elapsed < 11500,
@@ -264,6 +319,7 @@ try {
       const { page, context, errors } = session;
       try {
         const started = await selectAsset(page);
+        await readTimerState(page, started, "default-opened");
         assert.equal(await card(page).getAttribute("data-pinned"), "false");
         const freshSeconds = await seconds(page);
         assert.equal(
@@ -277,6 +333,7 @@ try {
         );
         await waitUntil(page, started, 3100);
         const midway = await seconds(page);
+        await readTimerState(page, started, "default-midway");
         assert.ok(
           midway >= 6 && midway <= 7,
           `Countdown at 3.1 seconds was ${midway}`,
@@ -288,7 +345,17 @@ try {
           "Annotation closed before nine seconds",
         );
         assert.ok((await seconds(page)) >= 1 && (await seconds(page)) <= 2);
+        const atNine = await readTimerState(
+          page,
+          started,
+          "default-nine-seconds",
+        );
+        assert.ok(
+          Math.abs(atNine.deadlineDeltaMs) < 1,
+          `An untouched card changed its deadline by ${atNine.deadlineDeltaMs}ms`,
+        );
         const closedAtMs = await waitClosed(page, started);
+        await readTimerState(page, started, "default-detached");
         assert.deepEqual(errors, []);
         return { closedAtMs, freshSeconds, midwaySeconds: midway };
       } finally {
@@ -619,7 +686,7 @@ try {
 } finally {
   await fs.writeFile(
     `${output}/results.json`,
-    JSON.stringify({ baseURL, results }, null, 2),
+    JSON.stringify({ baseURL, results, timerSnapshots }, null, 2),
   );
   await browser.close();
 }
