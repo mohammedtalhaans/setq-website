@@ -114,6 +114,46 @@
   background: #e9e3d8;
   color: #403223;
 }
+.machine-annotation__countdown-ring {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  transform: rotate(-90deg);
+  color: #7c8c63;
+  pointer-events: none;
+}
+.machine-annotation__pin {
+  position: absolute;
+  right: 45px;
+  top: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 39px;
+  height: 24px;
+  padding: 3px 5px;
+  background: #f5f2e9;
+  border: 1px solid #e2d9ca;
+  border-radius: 6px;
+  color: #78664c;
+  font-family: var(--mono);
+  font-size: 8px;
+}
+.machine-annotation__pin:hover {
+  background: #e9eddc;
+  border-color: #c5cfad;
+  color: #596c40;
+}
+.machine-annotation__pin[aria-pressed="true"] {
+  background: #e5ead9;
+  border-color: #bac6a2;
+  color: #556b3c;
+}
+.machine-annotation[data-pinned="true"] .machine-annotation__countdown-ring {
+  opacity: 0;
+}
 .machine-annotation__close:focus-visible {
   outline: 2px solid #6d8054;
   outline-offset: 3px;

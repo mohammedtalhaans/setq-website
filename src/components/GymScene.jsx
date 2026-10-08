@@ -1495,10 +1495,10 @@ export default function GymScene({
     () => annotationRef.current?.getCardSize?.() || { width: 282, height: 245 },
     [],
   );
-  const closeSelection = useCallback(() => {
+  const closeSelection = useCallback((options) => {
     const annotation = container.current?.querySelector(".machine-annotation");
     if (
-      keyboardSelection.current ||
+      (keyboardSelection.current && options?.reason !== "timeout") ||
       annotation?.contains(document.activeElement)
     ) {
       pickerRef.current

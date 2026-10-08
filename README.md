@@ -39,6 +39,10 @@ Build output is `dist/`, suitable for any static host. Fonts, models, illustrati
 
 Machine annotations include activity, coverage, trends and peak periods for the three illustrated weight-stack machines, and useful inventory/review records for the other equipment. All values are labelled examples. `Inspect equipment` provides keyboard access; Escape, the close button or the scene background returns to the overview.
 
+Cards gently float and close about ten seconds after appearing. `Keep open` pins a card; allowing auto-close starts a fresh ten seconds. The countdown stays functional when decorative motion is paused. A saved `Pause motion` preference and device reduced-motion settings settle the entire experience.
+
+Visible-only motion adds a travelling diagram signal, authored chart reveals, a breathing introduction dot, a subtle gym-render float, and an orbital demo invitation. Controls remain steady; none of these effects change the sample metrics. See `docs/motion-ideas.md` for applied touches and future concepts.
+
 ## Product scope
 
 The public site presents an early-access product. Dashboard figures, locations, assistant responses and follow-ups are illustrative. The planned model integration is disclosed in the assistant and FAQ. The sensor installation/performance is in validation. Equipment movement is not occupancy, queue length, member identity or selected weight. There are no fabricated customers, testimonials, measured returns or integrations.
@@ -55,6 +59,8 @@ npm run test:browser
 Start the preview first. Set `SETQ_QA_URL` to run against a published site. QA covers actual WebGL views, workspace controls, ranking order, CSV content, assistant sample state, FAQ, enquiry fields/Escape, privacy dialog, mobile navigation, responsive overflow and reduced motion. Axe checks the page and enquiry dialog. Results are written to ignored `output/`.
 
 `node scripts/capture.mjs` captures desktop/mobile previews from the local site. `docs/verification.md` records final validation.
+
+`node scripts/qa-motion.mjs` verifies real ten-second timing, pin/reset behaviour, bubble/connector motion, pause/resume, saved preference, reduced motion, mobile bounds and idle WebGL work.
 
 ## Hosting and setq.com.au
 

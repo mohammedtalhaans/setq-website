@@ -1,0 +1,22 @@
+/* Only the new decorative motion layer; root owns legacy animation preferences. */
+.site-shell .setq-site-signal {
+  fill: none;
+  stroke: #889775;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+.site-shell[data-motion="paused"] .setq-site-signal {
+  opacity: 0 !important;
+}
+.site-shell [data-site-motion-state="running"] .bar-chart > button,
+.site-shell .bar-chart[data-site-motion-state="running"] > button,
+.site-shell .evidence-bars[data-site-motion-state="running"] > div {
+  transform-origin: 50% 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-shell .setq-site-signal {
+    opacity: 0 !important;
+  }
+}

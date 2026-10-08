@@ -16,9 +16,12 @@ import {
   Cable,
   Layers,
   MoveUpRight,
+  Pause,
+  Play,
 } from "lucide-react";
 import DemoDashboard from "./components/DemoDashboard.jsx";
 import ClaudeDemo, { ClaudeCredit } from "./components/ClaudeDemo.jsx";
+import { useSiteMotion } from "./motion/useSiteMotion.js";
 import {
   SensorFloorBrief,
   EquipmentIllustration,
@@ -248,10 +251,10 @@ function PrivacyDialog({ dialogRef }) {
           assistant responses are illustrative.
         </p>
         <p>
-          The enquiry form prepares an email in your own email app. The site
-          does not upload or store the details you type. If you send your
-          enquiry, SetQ will use the information to respond and discuss your
-          gym’s needs.
+          Your motion preference is saved on this device. The enquiry form
+          prepares an email in your own email app. The site does not upload or
+          store the details you type. If you send your enquiry, SetQ will use
+          the information to respond and discuss your gym’s needs.
         </p>
         <p>
           The proposed equipment sensor focuses on stack movement and does not
@@ -378,6 +381,32 @@ export default function App() {
     contactRef = useRef(),
     privacyRef = useRef();
   const reducedMotion = useReducedMotion();
+  const [motionPaused, setMotionPaused] = useState(() => {
+    try {
+      return (
+        typeof window !== "undefined" &&
+        window.localStorage.getItem("setq-motion-paused") === "true"
+      );
+    } catch {
+      return false;
+    }
+  });
+  const motionOff = reducedMotion || motionPaused;
+  useSiteMotion({ rootRef: pageRef, reducedMotion, paused: motionPaused });
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("setq-motion-paused", String(motionPaused));
+    } catch {
+      /* Optional local preference. */
+    }
+  }, [motionPaused]);
+  useEffect(() => {
+    const previous = document.documentElement.style.scrollBehavior;
+    if (motionOff) document.documentElement.style.scrollBehavior = "auto";
+    return () => {
+      document.documentElement.style.scrollBehavior = previous;
+    };
+  }, [motionOff]);
   const [menuOpen, setMenuOpen] = useState(false),
     [activeZone, setActiveZone] = useState("strength"),
     [selectedMachine, setSelectedMachine] = useState(null);
@@ -386,6 +415,18 @@ export default function App() {
     contactRef.current.showModal();
   };
   useEffect(() => {
+    if (motionOff) {
+      gsap.set(
+        pageRef.current.querySelectorAll(
+          ".hero-copy > *, .hero-scene-frame, .hero-footnote, [data-reveal]",
+        ),
+        { opacity: 1, y: 0 },
+      );
+      gsap.set(pageRef.current.querySelectorAll("[data-draw]"), {
+        strokeDashoffset: 0,
+      });
+      return;
+    }
     const mm = gsap.matchMedia();
     mm.add(
       "(prefers-reduced-motion: no-preference)",
@@ -440,7 +481,7 @@ export default function App() {
       pageRef,
     );
     return () => mm.revert();
-  }, []);
+  }, [motionOff]);
   useEffect(() => {
     const key = (e) => {
       if (e.key === "Escape") setMenuOpen(false);
@@ -466,7 +507,11 @@ export default function App() {
     },
   };
   return (
-    <div ref={pageRef} className="site-shell">
+    <div
+      ref={pageRef}
+      className="site-shell"
+      data-motion={motionOff ? "paused" : "running"}
+    >
       <a className="skip-link" href="#main">
         Skip to content
       </a>
@@ -562,7 +607,7 @@ export default function App() {
                     activeZone={activeZone}
                     onZoneChange={setActiveZone}
                     onMachineSelectionChange={setSelectedMachine}
-                    reducedMotion={reducedMotion}
+                    reducedMotion={motionOff}
                   />
                 </Suspense>
               </SceneBoundary>
@@ -747,7 +792,7 @@ export default function App() {
           <div className="decision-cards">
             <article data-reveal>
               <div className="decision-visual">
-                <EquipmentIllustration />
+                <EquipmentIllustration animate={!motionOff} />
               </div>
               <span className="eyebrow">EQUIPMENT PLANNING</span>
               <h3>Invest with intent.</h3>
@@ -762,7 +807,7 @@ export default function App() {
             </article>
             <article data-reveal>
               <div className="decision-visual">
-                <OperationsIllustration />
+                <OperationsIllustration animate={!motionOff} />
               </div>
               <span className="eyebrow">EVERYDAY OPERATIONS</span>
               <h3>Find your team’s focus.</h3>
@@ -776,7 +821,7 @@ export default function App() {
             </article>
             <article data-reveal>
               <div className="decision-visual">
-                <PortfolioIllustration />
+                <PortfolioIllustration animate={!motionOff} />
               </div>
               <span className="eyebrow">ONE CLUB TO MANY</span>
               <h3>Grow with perspective.</h3>
@@ -792,7 +837,7 @@ export default function App() {
         </section>
         <section className="connected-section section-pad">
           <div className="connected-visual" data-reveal>
-            <SensorFloorBrief />
+            <SensorFloorBrief animate={!motionOff} />
           </div>
           <div className="connected-copy" data-reveal>
             <span className="eyebrow">A SMALL SIGNAL. A BIGGER PICTURE.</span>
@@ -870,7 +915,7 @@ export default function App() {
             </p>
           </div>
           <div data-reveal>
-            <Hardware reducedMotion={reducedMotion} />
+            <Hardware reducedMotion={motionOff} />
           </div>
         </section>
         <section className="faq-section section-pad">
@@ -967,6 +1012,24 @@ export default function App() {
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} SetQ</span>
           <span>EARLY ACCESS · PRODUCT PREVIEW</span>
+          <button
+            className="motion-toggle"
+            aria-pressed={motionOff}
+            disabled={reducedMotion}
+            onClick={() => setMotionPaused((value) => !value)}
+            title={
+              reducedMotion
+                ? "Your device requests reduced motion"
+                : "Control decorative animation throughout the site"
+            }
+          >
+            {motionOff ? <Play size={12} /> : <Pause size={12} />}{" "}
+            {reducedMotion
+              ? "Reduced motion"
+              : motionPaused
+                ? "Resume motion"
+                : "Pause motion"}
+          </button>
           <button onClick={() => privacyRef.current.showModal()}>
             Privacy
           </button>

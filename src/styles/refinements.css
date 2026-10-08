@@ -2,6 +2,19 @@
 :root {
   --muted: #6e6659;
 }
+.site-shell[data-motion="paused"] * {
+  animation: none !important;
+  transition: none !important;
+}
+.site-footer .footer-bottom .motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 0;
+}
+.motion-toggle:disabled {
+  opacity: 0.7;
+}
 .hero-topline,
 .hero-small,
 .hero-footnote,

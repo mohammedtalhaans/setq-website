@@ -20,3 +20,5 @@ Research, design and artifact work used the user-requested GPT-6.1 Sol agents at
 Generated test evidence is in the ignored `output/` directory. Re-run `npm run test:browser` against a running local or published site using `SETQ_QA_URL`.
 
 The subsequent per-machine annotation update is verified separately in `docs/machine-annotations.md`.
+
+The motion update passed five actual-clock cases: default ten-second closure, a replacement asset's fresh deadline, pin/unpin timing, bob/connector and global motion controls, and a 320px reduced-motion card. Counts and authored metrics remain unchanged by decoration. Hover/focus/hidden-document pause, saved preference, visible-only SVG loops and zero idle gym WebGL draws were verified. Native zone/inspector controls remain stationary while the overview render drifts. `docs/motion-ideas.md` records the applied effects and deferred ideas.

@@ -434,6 +434,7 @@ export function SensorFloorBrief({ className = "", animate = true }) {
             [86, -76, 215],
           ]}
           p={p}
+          data-site-motion-guide="signal"
         />
       </g>
       <g data-isoq-reveal="floor">

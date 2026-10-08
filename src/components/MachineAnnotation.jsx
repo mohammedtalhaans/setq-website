@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
   useLayoutEffect,
   useRef,
+  useState,
 } from "react";
 import { gsap } from "gsap";
 import {
@@ -14,6 +15,7 @@ import {
   Radio,
   ClipboardCheck,
   CornerDownRight,
+  Pin,
 } from "lucide-react";
 import { MACHINE_DATA } from "../data/machines.js";
 import "../styles/machine-annotation.css";
@@ -69,6 +71,16 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
 ) {
   const machine = MACHINE_DATA[machineId];
   const id = useId();
+  const [pinned, setPinned] = useState(false);
+  const [seconds, setSeconds] = useState(10);
+  const [shown, setShown] = useState(false);
+  const shownMachine = useRef(null);
+  const onCloseRef = useRef(onClose);
+  const motionReducedRef = useRef(reducedMotion);
+  onCloseRef.current = onClose;
+  motionReducedRef.current = reducedMotion;
+  const float = useRef({ value: 0 });
+  const countdownRing = useRef(null);
   const layer = useRef(null),
     card = useRef(null),
     face = useRef(null),
@@ -98,15 +110,17 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
       );
       card.current.style.left = `${x}px`;
       card.current.style.top = `${y}px`;
+      const bob = float.current.value;
+      card.current.style.transform = `translate3d(0, ${bob.toFixed(3)}px, 0)`;
       // The leader leaves the nearest lower corner when the panel overlaps the anchor.
       const sourceX = point.x,
         sourceY = point.y;
-      const footerY = y + cardHeight + 4;
+      const footerY = y + cardHeight + 4 + bob;
       let startX = clamp(sourceX, x + 20, x + cardWidth - 20),
         startY = footerY;
       if (sourceY < footerY + 9) {
         startX = sourceX < x + cardWidth * 0.5 ? x - 3 : x + cardWidth + 4;
-        startY = clamp(sourceY - 18, y + 48, y + cardHeight - 20);
+        startY = clamp(sourceY - 18, y + 48 + bob, y + cardHeight - 20 + bob);
       }
       const controlY = startY + (sourceY - startY) * 0.55;
       const path = `M ${startX} ${startY} C ${startX} ${controlY}, ${sourceX} ${controlY}, ${sourceX} ${sourceY}`;
@@ -116,6 +130,10 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
         `translate(${sourceX} ${sourceY})`,
       );
       layer.current.style.visibility = "visible";
+      if (shownMachine.current !== machineId) {
+        shownMachine.current = machineId;
+        setShown(true);
+      }
       layer.current.dataset.anchorX = sourceX.toFixed(2);
       layer.current.dataset.anchorY = sourceY.toFixed(2);
       layer.current.dataset.headY = sourceY.toFixed(2);
@@ -127,6 +145,7 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
       layer.current.dataset.leaderStartY = startY.toFixed(2);
       layer.current.dataset.stageWidth = point.width;
       layer.current.dataset.stageHeight = point.height;
+      layer.current.dataset.bobOffset = bob.toFixed(3);
     },
     [machineId],
   );
@@ -168,6 +187,134 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
     );
     return () => animation.kill();
   }, [machineId, machine, reducedMotion]);
+  useLayoutEffect(() => {
+    setPinned(false);
+    setShown(false);
+    shownMachine.current = null;
+  }, [machineId]);
+  useEffect(() => {
+    if (!machine || !card.current) return;
+    const element = card.current;
+    const updatePosition = () => place();
+    float.current.value = 0;
+    updatePosition();
+    if (reducedMotion) return;
+    const idle = gsap.to(float.current, {
+      value: -4,
+      duration: 2.15,
+      delay: 0.55,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+      paused: true,
+      onUpdate: updatePosition,
+    });
+    let intersects = false;
+    let hovering = false;
+    let disposed = false;
+    const update = () => {
+      if (disposed) return;
+      const focused =
+        element.contains(document.activeElement) &&
+        document.activeElement?.matches?.(":focus-visible");
+      if (intersects && !document.hidden && !hovering && !focused)
+        idle.resume();
+      else idle.pause();
+    };
+    const enter = () => {
+      hovering = true;
+      update();
+    };
+    const leave = () => {
+      hovering = false;
+      update();
+    };
+    const focus = () => update();
+    const blur = () => queueMicrotask(update);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        intersects = entry.isIntersecting;
+        update();
+      },
+      { threshold: 0.01 },
+    );
+    observer.observe(element);
+    element.addEventListener("pointerenter", enter);
+    element.addEventListener("pointerleave", leave);
+    element.addEventListener("focusin", focus);
+    element.addEventListener("focusout", blur);
+    document.addEventListener("visibilitychange", update);
+    return () => {
+      disposed = true;
+      idle.kill();
+      observer.disconnect();
+      element.removeEventListener("pointerenter", enter);
+      element.removeEventListener("pointerleave", leave);
+      element.removeEventListener("focusin", focus);
+      element.removeEventListener("focusout", blur);
+      document.removeEventListener("visibilitychange", update);
+      float.current.value = 0;
+      updatePosition();
+    };
+  }, [machineId, machine, place, reducedMotion]);
+  useEffect(() => {
+    if (!machine || !shown) return;
+    const circumference = 2 * Math.PI * 13;
+    countdownRing.current?.setAttribute("stroke-dasharray", `${circumference}`);
+    if (pinned) {
+      setSeconds(null);
+      countdownRing.current?.setAttribute("stroke-dashoffset", "0");
+      gsap.set(face.current, { opacity: 1, y: 0 });
+      return;
+    }
+    setSeconds(10);
+    const deadline = performance.now() + 10000;
+    if (layer.current)
+      layer.current.dataset.closeDeadline = deadline.toFixed(2);
+    let cancelled = false,
+      expired = false,
+      exitAnimation;
+    let timer, interval;
+    const finish = () => {
+      if (cancelled || expired) return;
+      expired = true;
+      clearTimeout(timer);
+      clearInterval(interval);
+      setSeconds(0);
+      const close = () => {
+        if (!cancelled) onCloseRef.current?.({ reason: "timeout" });
+      };
+      if (motionReducedRef.current || document.hidden) close();
+      else
+        exitAnimation = gsap.to(face.current, {
+          opacity: 0,
+          y: 7,
+          duration: 0.22,
+          ease: "power2.in",
+          onComplete: close,
+          overwrite: true,
+        });
+    };
+    const tick = () => {
+      if (cancelled || expired) return;
+      const left = Math.max(0, deadline - performance.now());
+      setSeconds(Math.ceil(left / 1000));
+      countdownRing.current?.setAttribute(
+        "stroke-dashoffset",
+        `${circumference * (1 - left / 10000)}`,
+      );
+      if (!left) finish();
+    };
+    tick();
+    interval = setInterval(tick, 100);
+    timer = setTimeout(finish, 10000);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      clearInterval(interval);
+      exitAnimation?.kill();
+    };
+  }, [machineId, machine, pinned, shown]);
   if (!machine) return null;
   const measured = machine.measurement === "sample";
   return (
@@ -176,6 +323,7 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
       className="machine-annotation"
       data-equipment-card
       data-equipment-id={machineId}
+      data-pinned={pinned ? "true" : "false"}
       style={{ visibility: "hidden" }}
     >
       <svg className="machine-annotation__leader" aria-hidden="true">
@@ -205,10 +353,41 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
               SETQ / {machine.assetId}
             </span>
             <button
+              className="machine-annotation__pin"
+              aria-label={pinned ? "Allow auto-close" : "Keep open"}
+              aria-pressed={pinned}
+              title={
+                pinned
+                  ? "Unpin: close after another 10 seconds"
+                  : "Keep this equipment card open"
+              }
+              onClick={() => setPinned((value) => !value)}
+            >
+              <Pin size={11} />
+              <span data-countdown-seconds={seconds ?? ""} aria-hidden="true">
+                {pinned ? "Keep" : `${seconds}s`}
+              </span>
+            </button>
+            <button
               className="machine-annotation__close"
               onClick={onClose}
               aria-label="Close equipment annotation"
             >
+              <svg
+                className="machine-annotation__countdown-ring"
+                viewBox="0 0 30 30"
+                aria-hidden="true"
+              >
+                <circle
+                  ref={countdownRing}
+                  cx="15"
+                  cy="15"
+                  r="13"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                />
+              </svg>
               <X size={14} />
             </button>
           </div>
