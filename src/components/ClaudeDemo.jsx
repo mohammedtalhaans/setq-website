@@ -13,13 +13,19 @@ export function ClaudeCredit({ dark = false, compact = false }) {
     <span
       className={`claude-credit ${dark ? "dark" : ""} ${compact ? "compact" : ""}`}
     >
-      <span>{compact ? "Claude models" : "Designed around Claude models"}</span>
-      <img
-        src={`${import.meta.env.BASE_URL}brand/anthropic.svg`}
-        alt="Anthropic"
-        width="85"
-        height="16"
-      />
+      <span className="claude-credit__brand">
+        Claude{" "}
+        <img
+          src={`${import.meta.env.BASE_URL}brand/claude-symbol.svg`}
+          alt=""
+          aria-hidden="true"
+          width="18"
+          height="18"
+        />
+      </span>
+      <span className="claude-credit__copy">
+        powered AI native gym operating system
+      </span>
     </span>
   );
 }

@@ -15,6 +15,66 @@
 .motion-toggle:disabled {
   opacity: 0.7;
 }
+.site-shell .claude-credit {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px 6px;
+  line-height: 1.55;
+  font-size: 11px;
+}
+.site-shell .claude-credit__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.site-shell .claude-credit .claude-credit__brand img {
+  width: 18px;
+  height: 18px;
+  max-height: none;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  opacity: 1;
+  filter: none;
+  box-sizing: border-box;
+}
+.site-shell .claude-credit__copy {
+  min-width: 0;
+}
+.site-shell .claude-credit.dark {
+  color: #d4ccbc;
+}
+.site-shell .claude-credit.compact {
+  font-size: 10px;
+  gap: 3px 5px;
+}
+.site-shell .assistant-credit {
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+}
+.site-shell .assistant-credit > .claude-credit {
+  flex-basis: 100%;
+}
+.site-shell .assistant-credit > span:last-child {
+  max-width: none;
+  text-align: left;
+}
+@media (max-width: 760px) {
+  .site-shell .claude-credit {
+    font-size: 10px;
+  }
+  .site-shell .claude-credit .claude-credit__brand img {
+    width: 17px;
+    height: 17px;
+  }
+  .site-shell .claude-credit.compact {
+    font-size: 9px;
+  }
+}
 .hero-topline,
 .hero-small,
 .hero-footnote,

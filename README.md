@@ -39,7 +39,7 @@ Build output is `dist/`, suitable for any static host. Fonts, models, illustrati
 
 Machine annotations include activity, coverage, trends and peak periods for the three illustrated weight-stack machines, and useful inventory/review records for the other equipment. All values are labelled examples. `Inspect equipment` provides keyboard access; Escape, the close button or the scene background returns to the overview.
 
-Cards gently float and close about ten seconds after appearing. `Keep open` pins a card; allowing auto-close starts a fresh ten seconds. The countdown stays functional when decorative motion is paused. A saved `Pause motion` preference and device reduced-motion settings settle the entire experience.
+Cards gently float and close about ten seconds after appearing, without a visible countdown. `Keep open` pins a card; allowing auto-close starts a fresh ten seconds. Automatic dismissal stays functional when decorative motion is paused. A saved `Pause motion` preference and device reduced-motion settings settle the entire experience.
 
 Visible-only motion adds a travelling diagram signal, authored chart reveals, a breathing introduction dot, a subtle gym-render float, and an orbital demo invitation. Controls remain steady; none of these effects change the sample metrics. See `docs/motion-ideas.md` for applied touches and future concepts.
 
@@ -85,4 +85,4 @@ Avoid setting a Pages custom domain before the DNS is prepared; doing so can red
 - `docs/assets.md`: exact model source, geometry-preserving optimization and brand attribution.
 - `THIRD_PARTY_NOTICES.md`: third-party software/fonts and trademark identification.
 
-All SetQ illustrations and gym geometry are original. Research references inform composition and interaction; their artworks and websites were not copied. Anthropic's authentic wordmark identifies the planned model technology and does not imply a partnership or endorsement.
+All SetQ illustrations and gym geometry are original. Research references inform composition and interaction; their artworks and websites were not copied. Claude's authentic symbol identifies the planned model technology and does not imply a partnership or endorsement. The requested product line reads "Claude [symbol] powered AI native gym operating system"; development/preview status remains disclosed.

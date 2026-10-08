@@ -144,7 +144,10 @@ try {
       .getAttribute("aria-expanded"),
     "true",
   );
-  assert.equal(await page.locator('#faq-4 img[alt="Anthropic"]').count(), 1);
+  assert.equal(
+    await page.locator('#faq-4 img[src$="brand/claude-symbol.svg"]').count(),
+    1,
+  );
   await page
     .getByRole("button", { name: "Book a demo", exact: true })
     .first()

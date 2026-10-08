@@ -30,31 +30,15 @@ async function createPage({
   await page.addInitScript(() => {
     window.__qaGymDrawCalls = 0;
     window.__qaLastControlClickAt = null;
-    window.__qaFirstCountdown = null;
     document.addEventListener(
       "click",
       (event) => {
         const control = event.target.closest?.("button, summary");
         if (!control) return;
         window.__qaLastControlClickAt = performance.now();
-        if (control.matches(".gym-scene button[data-equipment-id]"))
-          window.__qaFirstCountdown = null;
       },
       true,
     );
-    new MutationObserver(() => {
-      const clock = document.querySelector(
-        "[data-equipment-card] [data-countdown-seconds]",
-      );
-      const value = clock?.getAttribute("data-countdown-seconds");
-      if (window.__qaFirstCountdown === null && value && value !== "--")
-        window.__qaFirstCountdown = Number(value);
-    }).observe(document, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["data-countdown-seconds"],
-    });
     const proto = window.WebGL2RenderingContext?.prototype;
     if (!proto) return;
     [
@@ -105,15 +89,20 @@ async function clickControl(page, locator) {
   );
   return performance.now() - sinceClick;
 }
-const seconds = async (page) => {
-  const value = await page
-    .locator("[data-countdown-seconds]")
-    .first()
-    .getAttribute("data-countdown-seconds");
-  return value === "" || value === "--" || value === null
-    ? null
-    : Number(value);
-};
+async function assertSilentCard(page) {
+  assert.equal(
+    await card(page)
+      .locator("[data-countdown-seconds], .machine-annotation__countdown-ring")
+      .count(),
+    0,
+    "Equipment annotations must not display countdown text or a countdown ring",
+  );
+  assert.doesNotMatch(
+    await card(page).innerText(),
+    /\b10s\b/,
+    "A visible ten-second countdown remains",
+  );
+}
 async function selectAsset(page, id = "lat-pulldown") {
   const previousDeadline = await card(page).evaluateAll((layers) =>
     Number(layers[0]?.dataset.closeDeadline || 0),
@@ -127,6 +116,7 @@ async function selectAsset(page, id = "lat-pulldown") {
     .locator(`[data-equipment-card][data-equipment-id="${id}"]`)
     .waitFor({ state: "visible" });
   await releaseInteraction(page);
+  await assertSilentCard(page);
   return timerOrigin(page, previousDeadline);
 }
 async function timerOrigin(page, previousDeadline = 0) {
@@ -162,12 +152,9 @@ async function readTimerState(page, startedAt, stage) {
   const native = await page.evaluate(() => {
     const layer = document.querySelector("[data-equipment-card]");
     const face = layer?.querySelector(".machine-annotation__surface");
-    const clock = layer?.querySelector("[data-countdown-seconds]");
     return {
       browserNow: performance.now(),
       deadline: layer ? Number(layer.dataset.closeDeadline) : null,
-      seconds: clock?.getAttribute("data-countdown-seconds") ?? null,
-      secondsText: clock?.textContent ?? null,
       cardMounted: Boolean(layer),
       visible: layer ? getComputedStyle(layer).visibility : null,
       pinned: layer?.dataset.pinned ?? null,
@@ -314,37 +301,24 @@ try {
   // Independent contexts keep the real ten-second cases short without changing
   // the product clock, injecting a shortened deadline, or submitting enquiries.
   await Promise.all([
-    runCase("default deadline and countdown", async () => {
+    runCase("default silent deadline", async () => {
       const session = await createPage();
       const { page, context, errors } = session;
       try {
         const started = await selectAsset(page);
         await readTimerState(page, started, "default-opened");
         assert.equal(await card(page).getAttribute("data-pinned"), "false");
-        const freshSeconds = await seconds(page);
-        assert.equal(
-          await page.evaluate(() => window.__qaFirstCountdown),
-          10,
-          "A fresh annotation did not begin with a ten-second countdown",
-        );
-        assert.equal(
-          await page.locator(".machine-annotation__countdown-ring").count(),
-          1,
-        );
+        await assertSilentCard(page);
         await waitUntil(page, started, 3100);
-        const midway = await seconds(page);
-        await readTimerState(page, started, "default-midway");
-        assert.ok(
-          midway >= 6 && midway <= 7,
-          `Countdown at 3.1 seconds was ${midway}`,
-        );
+        await readTimerState(page, started, "default-midpoint");
+        await assertSilentCard(page);
         await waitUntil(page, started, 9000);
         assert.equal(
           await card(page).count(),
           1,
           "Annotation closed before nine seconds",
         );
-        assert.ok((await seconds(page)) >= 1 && (await seconds(page)) <= 2);
+        await assertSilentCard(page);
         const atNine = await readTimerState(
           page,
           started,
@@ -357,7 +331,7 @@ try {
         const closedAtMs = await waitClosed(page, started);
         await readTimerState(page, started, "default-detached");
         assert.deepEqual(errors, []);
-        return { closedAtMs, freshSeconds, midwaySeconds: midway };
+        return { closedAtMs, visibleCountdown: false };
       } finally {
         await context.close();
       }
@@ -368,10 +342,7 @@ try {
         const first = await selectAsset(page);
         await waitUntil(page, first, 7000);
         const replacement = await selectAsset(page, "chest-press");
-        assert.ok(
-          (await seconds(page)) >= 9,
-          "Selecting another asset did not reset the countdown",
-        );
+        await assertSilentCard(page);
         await waitUntil(page, replacement, 3500);
         assert.equal(
           await card(page).getAttribute("data-equipment-id"),
@@ -405,11 +376,7 @@ try {
             .getAttribute("aria-pressed"),
           "true",
         );
-        assert.equal(
-          await seconds(page),
-          null,
-          "Pinned cards should not display a misleading expiry countdown",
-        );
+        await assertSilentCard(page);
         await page.waitForTimeout(11000);
         assert.equal(
           await card(page).count(),
@@ -425,7 +392,8 @@ try {
         );
         const restarted = await timerOrigin(page, Number(oldDeadline));
         await releaseInteraction(page);
-        assert.ok((await seconds(page)) >= 9);
+        assert.equal(await card(page).getAttribute("data-pinned"), "false");
+        await assertSilentCard(page);
         await waitUntil(page, restarted, 9000);
         assert.equal(
           await card(page).count(),

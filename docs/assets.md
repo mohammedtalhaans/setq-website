@@ -18,9 +18,9 @@ The runtime changes finishes for brand coherence, keeps the sensor face down, an
 
 All gym icons, four small isometric figures and the layered sensor/floor/brief figure are original path geometry. Hairline is a visual grammar reference, with no code or SVG paths copied. Unique IDs and descriptive SVG titles support multiple instances and assistive technology.
 
-## Anthropic
+## Claude
 
-`public/brand/anthropic.svg` preserves the official inline wordmark geometry from [Anthropic's company page](https://www.anthropic.com/company), retrieved 2026-10-08. It is a trademark asset, not an asserted open-source asset. It identifies the planned model technology. The site explicitly discloses the development state and makes no partnership or endorsement claim.
+`public/brand/claude-symbol.svg` preserves the official sunburst path and rust colour from [Claude's homepage](https://claude.com/), retrieved 2026-10-08. The surrounding lettering was omitted so the standalone symbol can sit between "Claude" and "powered AI native gym operating system", as requested. The prior Anthropic wordmark was removed. Exact source, extraction and hash are recorded in `docs/claude-symbol-provenance.md`. The mark identifies the planned model technology; preview/development status remains disclosed and no partnership or endorsement is claimed.
 
 ## Fonts
 

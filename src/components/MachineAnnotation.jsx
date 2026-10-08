@@ -72,7 +72,6 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
   const machine = MACHINE_DATA[machineId];
   const id = useId();
   const [pinned, setPinned] = useState(false);
-  const [seconds, setSeconds] = useState(10);
   const [shown, setShown] = useState(false);
   const shownMachine = useRef(null);
   const onCloseRef = useRef(onClose);
@@ -80,7 +79,6 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
   onCloseRef.current = onClose;
   motionReducedRef.current = reducedMotion;
   const float = useRef({ value: 0 });
-  const countdownRing = useRef(null);
   const layer = useRef(null),
     card = useRef(null),
     face = useRef(null),
@@ -259,15 +257,10 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
   }, [machineId, machine, place, reducedMotion]);
   useEffect(() => {
     if (!machine || !shown) return;
-    const circumference = 2 * Math.PI * 13;
-    countdownRing.current?.setAttribute("stroke-dasharray", `${circumference}`);
     if (pinned) {
-      setSeconds(null);
-      countdownRing.current?.setAttribute("stroke-dashoffset", "0");
       gsap.set(face.current, { opacity: 1, y: 0 });
       return;
     }
-    setSeconds(10);
     const deadline = performance.now() + 10000;
     if (layer.current)
       layer.current.dataset.closeDeadline = deadline.toFixed(2);
@@ -275,13 +268,11 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
       expired = false,
       exitAnimation,
       didClose = false;
-    let timer, interval, exitTimer;
+    let timer, exitTimer;
     const finish = () => {
       if (cancelled || expired) return;
       expired = true;
       clearTimeout(timer);
-      clearInterval(interval);
-      setSeconds(0);
       const close = () => {
         if (cancelled || didClose) return;
         didClose = true;
@@ -302,23 +293,10 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
         exitTimer = setTimeout(close, 250);
       }
     };
-    const tick = () => {
-      if (cancelled || expired) return;
-      const left = Math.max(0, deadline - performance.now());
-      setSeconds(Math.ceil(left / 1000));
-      countdownRing.current?.setAttribute(
-        "stroke-dashoffset",
-        `${circumference * (1 - left / 10000)}`,
-      );
-      if (!left) finish();
-    };
-    tick();
-    interval = setInterval(tick, 100);
     timer = setTimeout(finish, 10000);
     return () => {
       cancelled = true;
       clearTimeout(timer);
-      clearInterval(interval);
       clearTimeout(exitTimer);
       exitAnimation?.kill();
     };
@@ -366,36 +344,18 @@ const MachineAnnotation = forwardRef(function MachineAnnotation(
               aria-pressed={pinned}
               title={
                 pinned
-                  ? "Unpin: close after another 10 seconds"
+                  ? "Allow this equipment card to close automatically"
                   : "Keep this equipment card open"
               }
               onClick={() => setPinned((value) => !value)}
             >
               <Pin size={11} />
-              <span data-countdown-seconds={seconds ?? ""} aria-hidden="true">
-                {pinned ? "Keep" : `${seconds}s`}
-              </span>
             </button>
             <button
               className="machine-annotation__close"
               onClick={onClose}
               aria-label="Close equipment annotation"
             >
-              <svg
-                className="machine-annotation__countdown-ring"
-                viewBox="0 0 30 30"
-                aria-hidden="true"
-              >
-                <circle
-                  ref={countdownRing}
-                  cx="15"
-                  cy="15"
-                  r="13"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                />
-              </svg>
               <X size={14} />
             </button>
           </div>

@@ -14,7 +14,7 @@ Native `Inspect equipment` controls provide keyboard access. Selection announces
 
 Camera and mechanical movement are finite. Reduced motion uses the settled pose immediately. Offscreen scenes stop drawing. No page-height change occurs on selection; narrow screens have a fixed larger baseline scene so the equipment remains visible beneath the annotation.
 
-Update: the annotation's DOM surface now has a slow four-pixel idle float while visible and unattended. The connector stretches with it while the machine pin stays fixed. Hover and keyboard interaction hold the float. Each card closes about ten seconds after it becomes visible; a countdown ring and `Keep open` pin make that behaviour controllable. Unpinning or selecting another asset starts a fresh deadline. Timeout closure preserves focus outside the card, and reduced motion/user pause stop decorative motion without stopping the functional timer. Camera framing remains finite and WebGL sleeps after settling.
+Update: the annotation's DOM surface now has a slow four-pixel idle float while visible and unattended. The connector stretches with it while the machine pin stays fixed. Hover and keyboard interaction hold the float. Each card closes about ten seconds after it becomes visible, with no visible countdown; the `Keep open` pin makes dismissal controllable. Unpinning or selecting another asset starts a fresh deadline. Timeout closure preserves focus outside the card, and reduced motion/user pause stop decorative motion without stopping the functional timer. Camera framing remains finite and WebGL sleeps after settling.
 
 ## Data
 

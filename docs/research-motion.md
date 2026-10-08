@@ -33,7 +33,7 @@ Motion is finite: intersection entry reveals groups over 850ms, staggered by 120
 
 ## Official Anthropic asset provenance
 
-`public/brand/anthropic.svg` is the actual inline wordmark from [Anthropic's official company page](https://www.anthropic.com/company), selected by its `aria-label="Anthropic"`. The source path geometry and 570 × 64 viewBox are preserved. The only rendering modification is converting `currentColor` to black for a standalone SVG. It was not redrawn or sourced from a third-party icon set.
+The original research retrieved the inline wordmark from [Anthropic's official company page](https://www.anthropic.com/company), selected by its `aria-label="Anthropic"`. It was subsequently replaced, at the user's request, with the official standalone Claude sunburst. The current asset's precise source and extraction are documented in `docs/claude-symbol-provenance.md`; the old wordmark is no longer shipped.
 
 No open-source license for this brand mark was observed. Treat it as an Anthropic trademark, not as an MIT asset. Place it only beside an accurate Claude technology reference with SetQ's early-access status. Its presence must not imply sponsorship, a customer relationship or partnership.
 

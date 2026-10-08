@@ -41,4 +41,4 @@ Clear, considered, grounded in the owner's decisions. Say equipment, floor, team
 
 ## Technology identification
 
-Every on-page reference to the requested model technology is accompanied by the authentic Anthropic wordmark through the shared attribution component. Do not present Anthropic as a customer, sponsor, certifier or partner.
+The shared technology line reads **"Claude [Claude symbol] powered AI native gym operating system"**. It uses the official Claude sunburst from claude.com, preserving the original rust colour and path geometry. Preview/development status remains visible. The mark identifies technology and does not imply sponsorship, certification or a partnership.
