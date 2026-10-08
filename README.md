@@ -29,13 +29,15 @@ Build output is `dist/`, suitable for any static host. Fonts, models, illustrati
 
 ## Experience
 
-- Original architectural gym scene: merged equipment geometry, warm materials, interactive zones, finite weight-stack motion and an original distance/smoothstep signal shader.
+- Original architectural gym scene: merged equipment geometry, warm materials, interactive zones, finite weight-stack motion and an original distance/smoothstep signal shader. Click any of its twelve equipment items for an anchored data card; the camera frames the selected machine beneath its annotation.
 - Interactive sample workspace: machine selection, equipment rankings, location comparisons and a real CSV export.
 - Assistant preview: prepared answers, evidence charts, source labels and local example follow-ups.
 - Five original isometric SVG illustrations with GSAP reveal/hover motion.
 - Accurate CAD-derived sensor assembly: seven parts, assembled/inside views, studio lighting, image fallback and link to the full hardware study.
 - Branded enquiry dialog: prepares an email to the founder. It does **not** submit to a nonexistent backend or claim an email was sent. Visitors send from their own mail application.
 - Mobile navigation, native focus-trapping dialogs, keyboard controls, reduced-motion support and WebGL fallbacks.
+
+Machine annotations include activity, coverage, trends and peak periods for the three illustrated weight-stack machines, and useful inventory/review records for the other equipment. All values are labelled examples. `Inspect equipment` provides keyboard access; Escape, the close button or the scene background returns to the overview.
 
 ## Product scope
 

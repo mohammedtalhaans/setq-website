@@ -18,3 +18,5 @@
 Research, design and artifact work used the user-requested GPT-6.1 Sol agents at High effort. Their outputs were reviewed, integrated and refined rather than accepted without inspection.
 
 Generated test evidence is in the ignored `output/` directory. Re-run `npm run test:browser` against a running local or published site using `SETQ_QA_URL`.
+
+The subsequent per-machine annotation update is verified separately in `docs/machine-annotations.md`.

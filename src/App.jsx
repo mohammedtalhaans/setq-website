@@ -379,7 +379,8 @@ export default function App() {
     privacyRef = useRef();
   const reducedMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false),
-    [activeZone, setActiveZone] = useState("strength");
+    [activeZone, setActiveZone] = useState("strength"),
+    [selectedMachine, setSelectedMachine] = useState(null);
   const openContact = () => {
     setMenuOpen(false);
     contactRef.current.showModal();
@@ -538,7 +539,10 @@ export default function App() {
                 Designed for the gym you’re building.
               </span>
             </div>
-            <div className="hero-scene-frame">
+            <div
+              className="hero-scene-frame"
+              data-machine-selected={selectedMachine ? "true" : "false"}
+            >
               <div className="scene-toplabel">
                 <span className="mono">A FEEL FOR YOUR FLOOR.</span>
                 <span className="compass" aria-hidden="true">
@@ -557,11 +561,12 @@ export default function App() {
                   <GymScene
                     activeZone={activeZone}
                     onZoneChange={setActiveZone}
+                    onMachineSelectionChange={setSelectedMachine}
                     reducedMotion={reducedMotion}
                   />
                 </Suspense>
               </SceneBoundary>
-              <div className="scene-floating-label">
+              <div className="scene-floating-label" hidden={!!selectedMachine}>
                 <span className="signal-icon">
                   <Radio size={15} />
                 </span>
@@ -586,7 +591,7 @@ export default function App() {
                   ))}
                 </div>
                 <span className="scene-caption">
-                  Illustrative gym · Select a zone
+                  Illustrative gym · Click equipment to inspect
                 </span>
               </div>
             </div>

@@ -8,7 +8,7 @@
 .gym-scene canvas {
   display: block;
   touch-action: pan-y;
-  cursor: pointer;
+  cursor: default;
 }
 .gym-scene__description {
   position: absolute;
@@ -60,8 +60,89 @@
   outline: 2px solid #5a4232;
   outline-offset: 3px;
 }
+.gym-scene__inspector {
+  position: absolute;
+  top: 52px;
+  right: 16px;
+  z-index: 6;
+  width: max-content;
+  color: #5a4232;
+  font-family: inherit;
+  font-size: 11px;
+}
+.gym-scene__inspector > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid rgba(90, 66, 50, 0.15);
+  border-radius: 100px;
+  background: rgba(245, 242, 235, 0.93);
+  box-shadow: 0 3px 12px rgba(90, 66, 50, 0.035);
+  cursor: pointer;
+  user-select: none;
+}
+.gym-scene__inspector > summary::-webkit-details-marker {
+  display: none;
+}
+.gym-scene__inspector > summary:focus-visible,
+.gym-scene__equipment-menu button:focus-visible {
+  outline: 2px solid #889775;
+  outline-offset: 3px;
+}
+.gym-scene__inspect-dot {
+  width: 5px;
+  height: 5px;
+  border: 1px solid #889775;
+  border-radius: 50%;
+}
+.gym-scene__equipment-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 205px;
+  max-height: 246px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  border: 1px solid #d8ceba;
+  border-radius: 13px;
+  background: #f5f2eb;
+  box-shadow:
+    0 16px 32px rgba(57, 43, 30, 0.12),
+    inset 0 1px 0 #fff;
+  scrollbar-width: thin;
+  scrollbar-color: #b1ab97 transparent;
+}
+.gym-scene__equipment-menu button {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #5a4232;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.gym-scene__equipment-menu button:hover,
+.gym-scene__equipment-menu button[aria-pressed="true"] {
+  background: #e5e7d9;
+}
 @media (max-width: 640px) {
   .gym-scene {
     min-height: 285px;
+  }
+  .gym-scene__inspector {
+    top: 52px;
+    right: 12px;
+  }
+  .gym-scene__inspector > summary {
+    padding: 8px 10px;
+    font-size: 10px;
   }
 }
