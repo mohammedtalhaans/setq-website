@@ -29,6 +29,7 @@ try {
   await page.waitForTimeout(1700);
   assert.match(await page.title(), /SetQ/);
   assert.equal(await page.locator("h1").count(), 1);
+  assert.equal(await page.locator('a[href*="setq-hardware"]').count(), 0);
   await page.getByRole("button", { name: "Cardio zone", exact: true }).click();
   assert.equal(
     await page
@@ -148,6 +149,13 @@ try {
     await page.locator('#faq-4 img[src$="brand/claude-symbol.svg"]').count(),
     1,
   );
+  const availability = await page.locator("#faq-4").textContent();
+  assert.match(
+    availability,
+    /Multiple selected gyms are already using SetQ technology/,
+  );
+  assert.match(availability, /limited to Australia/);
+  assert.match(availability, /queued due to high demand/);
   await page
     .getByRole("button", { name: "Book a demo", exact: true })
     .first()

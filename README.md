@@ -33,7 +33,7 @@ Build output is `dist/`, suitable for any static host. Fonts, models, illustrati
 - Interactive sample workspace: machine selection, equipment rankings, location comparisons and a real CSV export.
 - Assistant preview: prepared answers, evidence charts, source labels and local example follow-ups.
 - Five original isometric SVG illustrations with GSAP reveal/hover motion.
-- Accurate CAD-derived sensor assembly: seven parts, assembled/inside views, studio lighting, image fallback and link to the full hardware study.
+- Accurate CAD-derived sensor assembly: seven parts, assembled/inside views, studio lighting and image fallback, all within this website.
 - Branded enquiry dialog: prepares an email to the founder. It does **not** submit to a nonexistent backend or claim an email was sent. Visitors send from their own mail application.
 - Mobile navigation, native focus-trapping dialogs, keyboard controls, reduced-motion support and WebGL fallbacks.
 

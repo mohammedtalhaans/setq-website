@@ -1,18 +1,20 @@
 # SetQ product marketing context
 
-**Document version:** v1
+**Document version:** v2
 **Last updated:** 2026-10-08
-**Basis:** User instructions, source inspection and primary-source research. Audience and buying objections are informed hypotheses, not customer interview findings.
+**Basis:** User instructions, source inspection and primary-source research. The founder supplied current deployment and availability information on 2026-10-08; it is accepted as business information and has not been independently verified here. Audience and buying objections remain informed hypotheses, not customer interview findings.
 
 ## Product overview
 
 **One-liner:** SetQ is the AI native operating system for gyms, built around intelligence from the gym floor.
 
-**What it does:** SetQ connects proposed retrofit equipment sensors with a workspace for understanding equipment activity, comparing locations and planning what comes next. The intended Claude experience turns that evidence into plain-language answers and practical followup. The marketing website is an early-access product preview; the current source projects are prototypes, not a qualified deployed product, and Claude integration is in development.
+**What it does:** SetQ connects equipment intelligence with a workspace for understanding activity, comparing locations and planning what comes next. The intended Claude experience turns that evidence into plain-language answers and practical followup. The founder confirms that multiple selected gyms are already using SetQ technology. The website demonstrates the platform with illustrative data; the inspected source projects remain prototype studies and do not independently establish the scope or hardware version of those deployments. Claude integration in the inspected source is still in development.
+
+**Current availability:** Australia only. New installations are being queued due to high demand, according to the founder's 2026-10-08 update. A demo enquiry can request a place in the installation queue; no wait time, queue length, placement guarantee or booking confirmation has been supplied.
 
 **Category:** Gym operations intelligence. The broader operating-system positioning is user-requested and should remain anchored in equipment, floor planning and operational decisions.
 
-**Product type:** Connected hardware plus a cloud software platform, in development.
+**Product type:** Connected hardware and gym operations software, with founder-reported technology use at selected gyms and further platform features in development.
 
 **Business model:** Not finalised. No published price, free trial, installation guarantee or subscription terms have been approved.
 
@@ -21,7 +23,7 @@
 
 ## Target audience
 
-**Companies:** Independent commercial gyms, strength-focused clubs and gym groups with several sites; Australia is the initial geographic context, not an exclusive market claim.
+**Companies:** Independent commercial gyms, strength-focused clubs and gym groups with several sites. Current availability is limited to Australia, per the founder's 2026-10-08 update.
 
 **Decision-makers:** Gym owners, general managers, operations leaders and equipment/capital investment managers.
 
@@ -74,7 +76,7 @@
 
 **Why this matters:** A gym operator can move from a scattered impression of the floor to a repeatable review and a clearer shortlist of decisions.
 
-**Proof status:** These are positioning and design intentions. No customer choice, comparative performance, patented technology, production reliability or market-leading claim has been established.
+**Proof status:** Deployment, Australia-only availability and the installation queue are founder-provided current business facts. No customer identities, specific deployment count, comparative performance, patented technology, production reliability, measured outcomes or market-leading claim have been supplied.
 
 ## Objections and fit
 
@@ -84,6 +86,7 @@
 | Will it watch or identify members? | The proposed equipment sensor observes stack movement. It uses no camera or microphone and does not identify members. Full platform data policies must be defined before deployment. |
 | Does a chart prove a machine should be replaced? | Activity is one input. Member feedback, equipment condition, floor constraints and financial assumptions still matter. |
 | Is the assistant already live? | The website demonstrates the intended workflow with sample answers. Claude integration is in development. |
+| Is SetQ available, and where? | Multiple selected gyms are already using SetQ technology. Availability is currently limited to Australia, and new installations are queued due to high demand. Book a demo to discuss the gym and request a place in the queue. |
 
 **Poor initial fit:** Buyers expecting a mature payments, access-control or CRM replacement; tracking member identity; automatic weight lifted; exact queues; universal equipment support; or a validated autonomous purchasing system.
 
@@ -121,10 +124,12 @@ There are no verified SetQ interview quotes. Suggested questions below are autho
 **Personality:** Intelligent, calm, precise, ambitious.
 **Brand treatment:** SetQ is the primary brand. Every visible Claude or Anthropic mention must carry the authentic adjacent Anthropic logo, per user request. No partner badge, endorsement language or fabricated affiliation. Keep the mark unaltered and readable; official approval requirements are documented in research-positioning.md.
 
+**Site presentation:** Keep the embedded 3D experience on the marketing site. Remove links to the older standalone 3D prototype. Use Lucide icons for interface symbols and arrows; do not use decorative emoji or arrows typed as text.
+
 ## Proof points
 
 **Metrics:** No customer result, ROI, reliability, accuracy or install-time metric approved.
-**Customers:** None to cite.
+**Customers:** The founder confirms that multiple selected gyms are already using SetQ technology. No names, logos or specific counts have been supplied; do not invent them or present an independently verified case study.
 **Testimonials:** None to cite.
 
 | Theme | Available evidence |
@@ -133,14 +138,16 @@ There are no verified SetQ interview quotes. Suggested questions below are autho
 | Physical proposition | CAD-derived board/chip model and an illustrative fixed sensor above a weight stack; not a finished install |
 | Data honesty | Tracker data contract explicitly distinguishes observed, missing, manual and illustrative records |
 | AI direction | User-approved planned Claude positioning; no existing Claude API integration in inspected source |
+| Current deployment and availability | Founder update dated 2026-10-08: technology used by multiple selected gyms; Australia-only availability; new installations queued due to high demand |
 
 ## Goals
 
-**Business goal:** Attract conversations with gym owners and operators suitable for an early pilot.
-**Conversion:** Request a demo through a real email draft to founder@setq.com.au. Ask for gym name, location count and the equipment decision they want to understand.
+**Business goal:** Attract conversations with Australian gym owners and operators about demos and the installation queue.
+**Conversion:** Request a demo and discuss a place in the queue through a real email draft to founder@setq.com.au. Ask for gym name, location count and the equipment decision they want to understand. Preparing the draft does not submit an enquiry or reserve a queue position.
 **Secondary action:** Explore the interactive sample floor and assistant workflow.
 **Current metrics:** Unknown.
 
 ## Changelog
 
+- v2 (2026-10-08) — Added founder-provided deployment, Australia-only availability and demand-driven installation queue; updated audience, objections, proof and conversion goals; recorded removal of old prototype links and the Lucide-only interface preference.
 - v1 (2026-10-08) — Initial context from user brief, tracker/model source and primary-source category research; separates planned capabilities from prototype evidence.

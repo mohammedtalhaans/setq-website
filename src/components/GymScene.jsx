@@ -11,6 +11,7 @@ import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { ChevronDown, ArrowUpRight } from "lucide-react";
 import MachineAnnotation from "./MachineAnnotation.jsx";
 import "../styles/gym-scene.css";
 
@@ -1674,7 +1675,8 @@ export default function GymScene({
       <details className="gym-scene__inspector" ref={pickerRef}>
         <summary>
           <span className="gym-scene__inspect-dot" aria-hidden="true" />
-          Inspect equipment<span aria-hidden="true">⌄</span>
+          Inspect equipment
+          <ChevronDown size={12} aria-hidden="true" />
         </summary>
         <div
           className="gym-scene__equipment-menu"
@@ -1695,7 +1697,7 @@ export default function GymScene({
               onClick={(event) => selectEquipment(item.id, event.detail === 0)}
             >
               <span>{item.name}</span>
-              <span aria-hidden="true">↗</span>
+              <ArrowUpRight size={12} aria-hidden="true" />
             </button>
           ))}
         </div>

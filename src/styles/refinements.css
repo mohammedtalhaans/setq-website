@@ -15,6 +15,24 @@
 .motion-toggle:disabled {
   opacity: 0.7;
 }
+.footer-copyright {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.hardware-bottomline .hardware-model-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 9px;
+  color: #6c563c;
+}
+.hardware-scene__controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
 .site-shell .claude-credit {
   display: inline-flex;
   align-items: center;

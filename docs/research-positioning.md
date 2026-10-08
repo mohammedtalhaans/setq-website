@@ -38,8 +38,13 @@ The audience hypothesis is owners and operations leaders of equipment-intensive 
 
 ## Claim matrix
 
+Current business update, 2026-10-08: the founder states that multiple selected gyms are already using SetQ technology, availability is currently limited to Australia, and new installations are being queued due to high demand. These are user-provided current business facts, accepted for the requested website copy and not independently verified in this research. They do not specify customer identities, deployment counts, deployed hardware versions, live AI functionality or measured results. The illustrative website data and engineering qualification boundaries remain separate.
+
 | Proposed claim or feature | Evidence/status | Safe presentation |
 | --- | --- | --- |
+| Multiple selected gyms already use SetQ technology | Founder-provided current deployment information, 2026-10-08; not independently verified here | State the supplied fact without adding customer names, counts, testimonials, specific installed hardware or measured outcomes |
+| Currently available only in Australia | Founder-provided current availability, 2026-10-08 | Availability is currently limited to Australia; do not imply international availability |
+| New installations queued due to high demand | Founder-provided current commercial information, 2026-10-08 | New installations are queued due to high demand; demo enquiries can request a place, without invented queue length, waiting time or guaranteed placement |
 | AI native operating system for gyms | User-requested direction | Category plus explicit early-access product-preview context |
 | Powered by Claude models | Planned, no current API integration verified | Designed around Claude models; compact integration-in-development label next to assistant |
 | Small sensor above the weight stack | Current illustrative ultrasonic model | Proposed retrofit design; qualify exact compatible installations before selling |
@@ -56,7 +61,7 @@ The audience hypothesis is owners and operations leaders of equipment-intensive 
 | No camera / no microphone | True for proposed ultrasonic equipment sensor | Equipment-focused sensor, no camera or microphone; do not claim the full platform collects no personal data |
 | Universal compatibility | No qualification | Starts with compatible weight-stack equipment; site assessment |
 | Installation time, battery life, accuracy | No field measurements | No numerical promises |
-| Customer logos, savings, testimonials | None | Omit; show product substance and early-access invitation |
+| Customer logos, savings, testimonials | No customer identities, approved logos, measured outcomes or testimonials supplied | Omit; founder-reported deployment does not establish named customer proof or financial results |
 
 ## Anthropic mark and attribution
 

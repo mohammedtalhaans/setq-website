@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Layers } from "lucide-react";
 import {
   ContactShadows,
   Environment,
@@ -366,7 +367,7 @@ export default function HardwareScene({
             onClick={() => setInside(true)}
             disabled={!ready || failed}
           >
-            Inside <span aria-hidden="true">↗</span>
+            Inside <Layers size={12} aria-hidden="true" />
           </button>
         </div>
         <span className="hardware-scene__hint">

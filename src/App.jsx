@@ -18,6 +18,8 @@ import {
   MoveUpRight,
   Pause,
   Play,
+  Box,
+  Copyright,
 } from "lucide-react";
 import DemoDashboard from "./components/DemoDashboard.jsx";
 import ClaudeDemo, { ClaudeCredit } from "./components/ClaudeDemo.jsx";
@@ -288,7 +290,7 @@ const faqs = [
   ],
   [
     "Can we use the platform today?",
-    "SetQ is in development and we’re opening conversations about early access. This site shows the intended product experience with sample data. The Claude model integration is also in development; the assistant here uses prepared example answers.",
+    "Multiple selected gyms are already using SetQ technology. Availability is currently limited to Australia, with new installations queued due to high demand. Book a demo to discuss your gym and request a place in the queue.",
   ],
   [
     "How is pricing structured?",
@@ -364,13 +366,9 @@ function Hardware({ reducedMotion }) {
       </div>
       <div className="hardware-bottomline">
         <span className="mono">SMALL FOOTPRINT. BIGGER PICTURE.</span>
-        <a
-          href="https://mohammedtalhaans.github.io/setq-hardware/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Explore the full 3D study <ArrowUpRight size={13} />
-        </a>
+        <span className="hardware-model-caption">
+          <Box size={13} aria-hidden="true" /> Interactive 3D model
+        </span>
       </div>
     </div>
   );
@@ -493,7 +491,7 @@ export default function App() {
     strength: {
       label: "Strength floor",
       caption: "A little signal. A clearer decision.",
-      metric: "Equipment → insight",
+      metric: "Equipment insights",
     },
     cardio: {
       label: "Cardio zone",
@@ -1010,7 +1008,11 @@ export default function App() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} SetQ</span>
+          <span className="footer-copyright">
+            <Copyright size={10} aria-hidden="true" />
+            <span className="sr-only">Copyright </span>{" "}
+            {new Date().getFullYear()} SetQ
+          </span>
           <span>EARLY ACCESS · PRODUCT PREVIEW</span>
           <button
             className="motion-toggle"
