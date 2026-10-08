@@ -624,7 +624,7 @@ export function SensorFloorBrief({ className = "", animate = true }) {
 export function EquipmentIllustration(props) {
   return (
     <Illustration
-      title="Plan equipment around real demand"
+      title="Plan equipment with floor context"
       description="A squat rack and bench on a measured floor platform, with an adjacent usage strip."
       {...props}
     >

@@ -19,7 +19,7 @@ page.on("console", (msg) => {
   if (msg.type() === "error") errors.push(msg.text());
 });
 page.on("response", (res) => {
-  if (res.status() >= 400 && res.url().startsWith(base))
+  if (res.status() >= 400 && new URL(res.url()).origin === new URL(base).origin)
     badResponses.push({ url: res.url(), status: res.status() });
 });
 await fs.mkdir("output", { recursive: true });
@@ -241,6 +241,18 @@ try {
     await page.locator(".hardware-scene").getAttribute("data-state"),
     "inside",
   );
+  const mobileAccessibility = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  await fs.writeFile(
+    "output/mobile-accessibility.json",
+    JSON.stringify(summarize(mobileAccessibility), null, 2),
+  );
+  assert.deepEqual(errors, []);
+  assert.deepEqual(badResponses, []);
+  assert.deepEqual(accessibility.violations, []);
+  assert.deepEqual(formA11y.violations, []);
+  assert.deepEqual(mobileAccessibility.violations, []);
   await fs.writeFile(
     "output/verification.json",
     JSON.stringify(
@@ -252,6 +264,7 @@ try {
         sizes,
         accessibilityViolations: accessibility.violations.length,
         formViolations: formA11y.violations.length,
+        mobileAccessibilityViolations: mobileAccessibility.violations.length,
         checks: [
           "scene zones",
           "equipment selection",

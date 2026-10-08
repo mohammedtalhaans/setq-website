@@ -558,7 +558,11 @@ export default function DemoDashboard() {
                   : "Every club. One perspective."}
             </h3>
           </div>
-          <button className="report-button" onClick={exportReport}>
+          <button
+            className="report-button"
+            aria-label={downloaded ? "Downloaded" : "Sample report"}
+            onClick={exportReport}
+          >
             {downloaded ? <Check size={15} /> : <Download size={15} />}
             <span>{downloaded ? "Downloaded" : "Sample report"}</span>
           </button>

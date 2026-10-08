@@ -19,6 +19,9 @@ try {
   );
   // React renders Suspense fallback explanatory templates for unrendered WebGL modules.
   html = html.replace(/<template\b[\s\S]*?<\/template>/g, "");
+  // Vite's SSR server normalizes './' to '/' in import.meta.env.BASE_URL.
+  // Keep public assets relative in the compiled HTML for repository-path hosts.
+  html = html.replace(/(src|href)="\/(brand|images)\//g, '$1="./$2/');
   if (process.env.SETQ_PUBLIC_URL) {
     const configured = new URL(process.env.SETQ_PUBLIC_URL);
     const base = configured.href.endsWith("/")
