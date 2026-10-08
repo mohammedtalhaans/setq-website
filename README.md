@@ -4,7 +4,7 @@ Premium marketing site for SetQ, the AI native operating system for gyms. Built 
 
 ![SetQ brand and architectural gym](public/social-preview.png)
 
-[Open the website preview](https://mohammedtalhaans.github.io/setq-website/)
+[Open SetQ](https://setq.com.au/) · [GitHub Pages preview](https://mohammedtalhaans.github.io/setq-website/)
 
 **Brand/domain:** SetQ · setq.com.au
 **Demo enquiries:** founder@setq.com.au
@@ -64,16 +64,11 @@ Start the preview first. Set `SETQ_QA_URL` to run against a published site. QA c
 
 ## Hosting and setq.com.au
 
-The Pages workflow publishes `dist/` automatically on pushes to `main`. The initial Pages URL is a staging preview. No DNS changes or custom-domain claim are made by this repository.
+Production is hosted on Cloudflare Pages at **https://setq.com.au/**. The `setq-website` project builds this repository's `main` branch automatically with `npm run build`, output directory `dist`, `NODE_VERSION=24` and `SETQ_PUBLIC_URL=https://setq.com.au/`. Its provider preview is https://setq-website.pages.dev/.
 
-To connect the requested domain after your DNS is available:
+The domain remains registered at Namecheap; Cloudflare manages DNS. Both apex and `www` point to the Pages project with HTTPS enabled. An active 301 rule redirects `www` to the apex and preserves paths and query strings. GitHub Pages remains a separate preview, published by the existing workflow.
 
-1. Add `setq.com.au` in this repository's GitHub Pages custom-domain settings.
-2. Follow [GitHub's official instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site) for the apex DNS records and domain verification.
-3. Enable enforced HTTPS after GitHub provisions the certificate.
-4. Re-run the Pages workflow and confirm the apex site, asset loading and email-draft flow. Source canonical/social metadata defaults to `https://setq.com.au/`; the Pages build replaces it with GitHub's configured site URL, so staging links share the correct preview image and the custom domain works after it is configured.
-
-Avoid setting a Pages custom domain before the DNS is prepared; doing so can redirect the working staging link to an unavailable domain.
+Lark Mail hosts `mohammedansari@setq.com.au` as the primary mailbox and `founder@setq.com.au` as a shared role inbox accessible to the same owner through Other Accounts. MX, SPF and 2048-bit DKIM are configured. DMARC starts in monitoring mode (`p=none`). Delivery between these two inboxes was verified in both directions; this is not an external deliverability test.
 
 ## Research and provenance
 
