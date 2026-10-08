@@ -78,7 +78,7 @@ export const MACHINE_DATA = Object.freeze({
     trend: "+10%",
     peakWindow: "17:00–20:00",
     insight:
-      "This station leads the sample strength group. Check placement before expanding it.",
+      "This station leads the strength group. Check placement before expanding it.",
     sparkline: [239, 245, 251, 247, 261, 266, 270],
     spec: [
       { label: "Approx. footprint", value: "2.0 × 1.0 m" },

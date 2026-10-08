@@ -15,6 +15,33 @@
 .motion-toggle:disabled {
   opacity: 0.7;
 }
+.site-shell .hardware-stage {
+  height: auto;
+  min-height: 0;
+}
+.site-shell .hardware-display {
+  min-height: 0;
+}
+.hero .hero-scene-frame {
+  height: 620px;
+}
+@media (max-width: 760px) {
+  .hero .hero-scene-frame {
+    height: 560px;
+  }
+}
+.scene-inspect-hint {
+  position: absolute;
+  bottom: 18px;
+  left: 25px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #786b57;
+  pointer-events: none;
+}
+.hero-scene-frame[data-machine-selected="true"] .scene-inspect-hint {
+  display: none;
+}
 .footer-copyright {
   display: inline-flex;
   align-items: center;

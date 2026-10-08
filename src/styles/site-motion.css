@@ -15,8 +15,3 @@
 .site-shell .evidence-bars[data-site-motion-state="running"] > div {
   transform-origin: 50% 100%;
 }
-@media (prefers-reduced-motion: reduce) {
-  .site-shell .setq-site-signal {
-    opacity: 0 !important;
-  }
-}

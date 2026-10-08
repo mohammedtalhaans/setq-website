@@ -29,23 +29,23 @@ Build output is `dist/`, suitable for any static host. Fonts, models, illustrati
 
 ## Experience
 
-- Original architectural gym scene: merged equipment geometry, warm materials, interactive zones, finite weight-stack motion and an original distance/smoothstep signal shader. Click any of its twelve equipment items for an anchored data card; the camera frames the selected machine beneath its annotation.
-- Interactive sample workspace: machine selection, equipment rankings, location comparisons and a real CSV export.
+- Original architectural gym scene: merged equipment geometry, warm materials, finite weight-stack motion and an original distance/smoothstep signal shader. Click any of its twelve equipment items for a smoothly anchored data card with an hourly usage graph; the camera frames the selected machine beneath its annotation.
+- Interactive workspace: machine selection, equipment rankings and location comparisons.
 - Assistant preview: prepared answers, evidence charts, source labels and local example follow-ups.
-- Five original isometric SVG illustrations with GSAP reveal/hover motion.
-- Accurate CAD-derived sensor assembly: seven parts, assembled/inside views, studio lighting and image fallback, all within this website.
+- Original SVG illustrations with GSAP motion. Clear machine, operations checklist and location figures explain the three decision areas; benefit icons animate on scroll.
+- CAD-derived sensor assembly with 36 × 29 × 11 mm enclosure dimensions and an installed-machine view. A continuous weight-stack animation and rolling graph share the same clock, with stack travel, sensor distance, peak travel and cycle readings.
 - Branded enquiry dialog: prepares an email to the founder. It does **not** submit to a nonexistent backend or claim an email was sent. Visitors send from their own mail application.
-- Mobile navigation, native focus-trapping dialogs, keyboard controls, reduced-motion support and WebGL fallbacks.
+- Mobile navigation, native focus-trapping dialogs, keyboard controls, a saved manual motion control and WebGL fallbacks.
 
-Machine annotations include activity, coverage, trends and peak periods for the three illustrated weight-stack machines, and useful inventory/review records for the other equipment. All values are labelled examples. `Inspect equipment` provides keyboard access; Escape, the close button or the scene background returns to the overview.
+Machine annotations include activity, coverage, trends and peak periods for the three weight-stack machines, and useful inventory/review records for the other equipment. Hourly strength profiles sum to the existing daily totals; other equipment has dashed planning profiles. `Inspect equipment` provides keyboard access; Escape, the close button or the scene background returns to the overview. The hourly graph also supports pointer and arrow-key inspection.
 
-Cards gently float and close about ten seconds after appearing, without a visible countdown. `Keep open` pins a card; allowing auto-close starts a fresh ten seconds. Automatic dismissal stays functional when decorative motion is paused. A saved `Pause motion` preference and device reduced-motion settings settle the entire experience.
+Cards fade, lift and scale into place, then follow the machine projection with a finite damped transition. They gently float and close about ten seconds after appearing, without a visible countdown. `Keep open` pins a card; allowing auto-close starts a fresh ten seconds. Automatic dismissal stays functional when decorative motion is paused. A saved `Pause motion` preference settles the experience. The website deliberately uses that explicit control rather than the OS motion preference, as requested by the founder.
 
-Visible-only motion adds a travelling diagram signal, authored chart reveals, a breathing introduction dot, a subtle gym-render float, and an orbital demo invitation. Controls remain steady; none of these effects change the sample metrics. See `docs/motion-ideas.md` for applied touches and future concepts.
+Visible-only motion adds a travelling diagram signal, authored chart reveals, benefit-icon micro animations, a subtle gym-render float, and an orbital demo invitation. Controls remain steady. The installed sensor animation collects a bounded rolling twelve-second history; its mechanism, distance and graph remain synchronized. See `docs/motion-ideas.md` for applied touches and future concepts.
 
 ## Product scope
 
-The public site presents an early-access product. Dashboard figures, locations, assistant responses and follow-ups are illustrative. The planned model integration is disclosed in the assistant and FAQ. The sensor installation/performance is in validation. Equipment movement is not occupancy, queue length, member identity or selected weight. There are no fabricated customers, testimonials, measured returns or integrations.
+The public site presents an early-access product, with Australian availability and installation demand supplied by the founder. Dashboard figures, locations, assistant responses and follow-ups are authored demonstration content; there is no live model or equipment API. The website omits repeated example labels at the founder's request. The installation animation shows nominal enclosure dimensions and a 550 mm rest gap with 0–300 mm stack travel. These are visual design values, not a claim of validated sensor performance. Equipment movement is not occupancy, queue length, member identity or selected weight. There are no fabricated customer names, testimonials, measured returns or integrations.
 
 See `.agents/product-marketing.md`, `docs/research-positioning.md` and `docs/copy.md` for the claim boundaries and source-backed positioning.
 
@@ -56,11 +56,11 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-Start the preview first. Set `SETQ_QA_URL` to run against a published site. QA covers actual WebGL views, workspace controls, ranking order, CSV content, assistant sample state, FAQ, enquiry fields/Escape, privacy dialog, mobile navigation, responsive overflow and reduced motion. Axe checks the page and enquiry dialog. Results are written to ignored `output/`.
+Start the preview first. Set `SETQ_QA_URL` to run against a published site. QA covers actual WebGL views, workspace controls, ranking order, assistant state, FAQ, enquiry fields/Escape, privacy dialog, mobile navigation and responsive overflow. Axe checks the page and enquiry dialog. Results are written to ignored `output/`.
 
 `node scripts/capture.mjs` captures desktop/mobile previews from the local site. `docs/verification.md` records final validation.
 
-`node scripts/qa-motion.mjs` verifies real ten-second timing, pin/reset behaviour, bubble/connector motion, pause/resume, saved preference, reduced motion, mobile bounds and idle WebGL work.
+`node scripts/qa-motion.mjs` verifies real ten-second timing, pin/reset behaviour, bubble/connector motion, pause/resume, saved preference, mobile bounds and idle WebGL work. `node scripts/qa-redesign.mjs` verifies annotation entry frames and hourly keyboard inspection, dimension labels, synchronized stack/graph readings, rolling history and local/global/offscreen pause.
 
 ## Hosting and setq.com.au
 
@@ -85,4 +85,4 @@ Avoid setting a Pages custom domain before the DNS is prepared; doing so can red
 - `docs/assets.md`: exact model source, geometry-preserving optimization and brand attribution.
 - `THIRD_PARTY_NOTICES.md`: third-party software/fonts and trademark identification.
 
-All SetQ illustrations and gym geometry are original. Research references inform composition and interaction; their artworks and websites were not copied. Claude's authentic symbol identifies the planned model technology and does not imply a partnership or endorsement. The requested product line reads "Claude [symbol] powered AI native gym operating system"; development/preview status remains disclosed.
+All SetQ illustrations and gym geometry are original. Research references inform composition and interaction; their artworks and websites were not copied. Claude's authentic symbol identifies the model technology and does not imply a partnership or endorsement. The requested product line reads "Claude [symbol] powered AI native gym operating system". Implementation and data provenance are recorded here and in the project documents.

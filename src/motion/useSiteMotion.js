@@ -6,18 +6,13 @@ import "../styles/site-motion.css";
 gsap.registerPlugin(ScrollTrigger);
 
 /** Decorative DOM/SVG motion only. Equipment values, camera and outer reveals stay untouched. */
-export function useSiteMotion({
-  rootRef,
-  reducedMotion = false,
-  paused = false,
-}) {
+export function useSiteMotion({ rootRef, paused = false }) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    root.dataset.siteMotionEngine =
-      paused || reducedMotion ? "settled" : "running";
+    root.dataset.siteMotionEngine = paused ? "settled" : "running";
     root.dataset.siteMotionActive = "0";
-    if (paused || reducedMotion) return;
+    if (paused) return;
 
     const records = new Map();
     const seen = new WeakSet();
@@ -154,6 +149,74 @@ export function useSiteMotion({
           ),
         }));
         completeForInteraction(chart, record);
+      }
+      for (const icon of root.querySelectorAll(
+        '.perspective-columns .setq-icon[data-icon-animate="true"]',
+      )) {
+        if (seen.has(icon)) continue;
+        register(icon, () => {
+          const once = gsap.timeline({ paused: true });
+          icon.querySelectorAll("[data-icon-draw]").forEach((path, index) => {
+            const length = path.getTotalLength();
+            once.fromTo(
+              path,
+              { strokeDasharray: length, strokeDashoffset: length },
+              {
+                strokeDashoffset: 0,
+                duration: 0.65,
+                ease: "power2.inOut",
+                immediateRender: false,
+              },
+              index * 0.06,
+            );
+          });
+          const bars = icon.querySelectorAll("[data-icon-bar]"),
+            weights = icon.querySelectorAll("[data-icon-weight]");
+          bars.forEach((bar, index) => {
+            const height = +bar.getAttribute("height"),
+              y = +bar.getAttribute("y");
+            once.set(
+              bar,
+              {
+                attr: { height: 0.1, y: y + height - 0.1 },
+                immediateRender: false,
+              },
+              0,
+            );
+            once.to(
+              bar,
+              { attr: { height, y }, duration: 0.75, ease: "power3.out" },
+              0.1 + index * 0.08,
+            );
+          });
+          if (weights.length)
+            once.fromTo(
+              weights,
+              { y: -1.8 },
+              {
+                y: 0,
+                duration: 0.85,
+                ease: "power3.out",
+                immediateRender: false,
+              },
+              0.15,
+            );
+          icon.querySelectorAll("[data-icon-check]").forEach((path) => {
+            const length = path.getTotalLength();
+            once.fromTo(
+              path,
+              { strokeDasharray: length, strokeDashoffset: length },
+              {
+                strokeDashoffset: 0,
+                duration: 0.38,
+                ease: "power2.out",
+                immediateRender: false,
+              },
+              0.65,
+            );
+          });
+          return { once };
+        });
       }
       for (const svg of root.querySelectorAll(".sparkline")) {
         const path = svg.querySelector("path");
@@ -383,7 +446,7 @@ export function useSiteMotion({
       root.dataset.siteMotionEngine = "settled";
       root.dataset.siteMotionActive = "0";
     };
-  }, [rootRef, reducedMotion, paused]);
+  }, [rootRef, paused]);
 }
 
 export default useSiteMotion;

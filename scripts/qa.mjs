@@ -30,23 +30,22 @@ try {
   assert.match(await page.title(), /SetQ/);
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator('a[href*="setq-hardware"]').count(), 0);
-  await page.getByRole("button", { name: "Cardio zone", exact: true }).click();
   assert.equal(
     await page
-      .getByRole("button", { name: "Cardio zone", exact: true })
-      .getAttribute("aria-pressed"),
-    "true",
+      .locator(".hero-topline, .scene-floating-label, .scene-bottom")
+      .count(),
+    0,
   );
-  await page.getByRole("button", { name: "Open floor", exact: true }).click();
+  assert.doesNotMatch(
+    await page.locator("body").innerText(),
+    /INTRODUCING SETQ|\b(?:sample|illustrative)\b/i,
+  );
   assert.equal(
     await page
-      .getByRole("button", { name: "Open floor", exact: true })
-      .getAttribute("aria-pressed"),
-    "true",
+      .getByRole("button", { name: "Sample report", exact: true })
+      .count(),
+    0,
   );
-  await page
-    .getByRole("button", { name: "Strength floor", exact: true })
-    .click();
   await page.locator("#platform").scrollIntoViewIfNeeded();
   await page.waitForTimeout(1000);
   await page
@@ -80,16 +79,6 @@ try {
     /RIVERSIDE/,
   );
   await page.getByRole("tab", { name: "Floor activity", exact: true }).click();
-  const dlPromise = page.waitForEvent("download");
-  await page
-    .getByRole("button", { name: "Sample report", exact: true })
-    .click();
-  const dl = await dlPromise;
-  await dl.saveAs("output/qa-sample-report.csv");
-  assert.match(
-    await fs.readFile("output/qa-sample-report.csv", "utf8"),
-    /Sample data/,
-  );
   await page.locator("#intelligence").scrollIntoViewIfNeeded();
   await page.waitForTimeout(1000);
   await page
@@ -106,13 +95,13 @@ try {
     .click();
   assert.match(
     await page.locator(".followup-feedback").textContent(),
-    /No live task/,
+    /Focus this review/,
   );
   await page
     .getByLabel("Try a question about your gym")
     .fill("Should I purchase a machine?");
   await page
-    .getByRole("button", { name: "Show a related sample answer", exact: true })
+    .getByRole("button", { name: "Ask about your gym", exact: true })
     .click();
   await page.waitForTimeout(700);
   assert.match(
@@ -123,13 +112,13 @@ try {
   await page
     .locator('.hardware-scene[data-ready="true"]')
     .waitFor({ timeout: 20000 });
-  await page.getByRole("button", { name: "Inside", exact: false }).click();
+  await page.getByRole("button", { name: "On a machine", exact: true }).click();
   assert.equal(
-    await page.locator(".hardware-scene").getAttribute("data-state"),
-    "inside",
+    await page.locator(".hardware-scene").getAttribute("data-view"),
+    "machine",
   );
   await page.waitForTimeout(900);
-  await page.getByRole("button", { name: "Assembled", exact: true }).click();
+  await page.getByRole("button", { name: "Sensor", exact: true }).click();
   await page
     .getByRole("button", {
       name: "Can we use the platform today?",
@@ -240,17 +229,21 @@ try {
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(100);
   assert.equal(
-    await page.evaluate(
-      () => getComputedStyle(document.documentElement).scrollBehavior,
-    ),
-    "auto",
+    await page.locator(".site-shell").getAttribute("data-motion"),
+    "running",
   );
-  await page.getByRole("button", { name: "Open floor", exact: true }).click();
-  await page.locator("#hardware").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Inside", exact: false }).click();
   assert.equal(
-    await page.locator(".hardware-scene").getAttribute("data-state"),
-    "inside",
+    await page
+      .getByRole("button", { name: "Reduced motion", exact: true })
+      .count(),
+    0,
+  );
+  await page.locator("#hardware").scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "On a machine", exact: true }).click();
+  await page.waitForTimeout(1200);
+  assert.equal(
+    await page.locator(".hardware-scene").getAttribute("data-playing"),
+    "true",
   );
   const mobileAccessibility = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
@@ -277,11 +270,11 @@ try {
         formViolations: formA11y.violations.length,
         mobileAccessibilityViolations: mobileAccessibility.violations.length,
         checks: [
-          "scene zones",
+          "clean hero and removed floor controls",
           "equipment selection",
           "planning rankings",
           "locations",
-          "CSV download",
+          "sample download removed",
           "assistant questions",
           "local followup",
           "hardware views",
@@ -290,7 +283,7 @@ try {
           "privacy",
           "mobile navigation",
           "responsive overflow",
-          "reduced motion",
+          "explicit motion control under OS reduced preference",
         ],
       },
       null,

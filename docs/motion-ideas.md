@@ -1,41 +1,40 @@
 # SetQ motion direction
 
-The motion should feel like a considered physical operating model: signals arrive, evidence resolves, and the operator chooses a next step. It should retain the warm cream, brown, sage and fine construction lines already established. It should never suggest that authored example metrics are live or count changing values for decorative effect.
+Motion follows the product story: equipment moves, a signal becomes evidence, and an operator chooses a next step. The established cream, walnut, sage and fine construction lines remain consistent.
 
-## Applied now
+## Applied
 
-- **A signal takes shape.** One small sage dash travels along the diagram's existing right-hand construction guide from equipment through floor context toward the brief. It travels for 2.5 seconds, rests for 3.8 seconds, and runs only while visible. Existing solid surfaces still occlude the guide honestly; the outside guide leaves a visible journey between the planes.
-- **Evidence resolves.** Existing sample chart bars grow once to their authored heights; sparklines draw once. No number changes. Pointer or keyboard interaction immediately completes a chart reveal so the usable chart is never kept behind an animation. Newly mounted dashboard/assistant views receive their own finite entry.
-- **Small signals, steady operation.** The tiny introducing/status dot has a 2.5-second breathing half-cycle. It is decorative status texture, not a live telemetry claim.
-- **A considered orbit.** The lower CTA's two ellipses draw on entry. Native scroll shifts their centres by only 12 SVG units across the entire section. The existing small orbit dots drift 4 units horizontally and 2 vertically over 4.8 seconds. The footer SetQ wordmark floats as one coherent object by 1.8px; letter alignment and geometry stay intact.
-- **A physical overview.** Only the rendered gym canvas floats by at most 2.5px while visible and unattended; native controls, labels and annotation stay stationary. Pointer entry, keyboard focus or an open picker holds the canvas at its current position. Selecting equipment intentionally settles the canvas to zero so the focused model and its projected annotation agree. The WebGL camera and sample data are untouched. Global pause/reduced motion return the static render.
+- **Equipment inspection.** Cards fade, lift and scale into place over 680 ms after the first valid machine projection. A finite critically damped follower smooths camera and resize updates. The stem follows the card's four-pixel idle float while its endpoint stays on the machine. Hover and focus hold the float. Cards close after about ten seconds without a countdown, with a Keep open control.
+- **Usage through the day.** Every card includes an hourly graph with pointer and keyboard inspection. The three strength profiles sum to their authored active-minute totals. Other equipment uses dashed planning profiles.
+- **Stack movement becomes a trace.** On a machine shows the sensor fixed above the stack. The mechanism, sensor gap, graph cursor, peak and cycle count share one clock. The graph retains a bounded rolling twelve seconds. It has a local Pause control and stops offscreen or when the document is hidden.
+- **Benefit icons.** The activity bars grow from their baseline, the equipment icon makes a small mechanical movement, and the checklist resolves its checkmark as each icon enters the viewport. These are finite micro animations.
+- **Clear decisions.** A recognisable weight-stack machine accompanies an activity panel; connected equipment leads to a team checklist; three distinct gym facades accompany location plots. Bars grow using height/y attributes, avoiding transformed SVG baselines and label overlap.
+- **A signal takes shape.** A small sage dash travels along the floor diagram's existing construction guide. It travels for 2.5 seconds, rests for 3.8 seconds and runs only while visible.
+- **Evidence resolves.** Workspace bars grow once to their authored heights and sparklines draw once. Pointer or keyboard interaction immediately completes a chart reveal. Mounted dashboard and assistant views receive their own finite entry.
+- **A considered orbit.** Lower invitation ellipses draw on entry and respond slightly to native scroll. Dots drift by a few SVG units. The footer wordmark moves as one coherent object.
+- **A physical overview.** Only the unattended gym canvas floats by at most 2.5 px. Controls stay stationary. Pointer entry, keyboard focus or an open picker holds it; a selection settles the canvas so model and annotation projection agree.
 
-The annotation's separate cartoon float and ten-second dismissal are owned by `MachineAnnotation`, rather than coupled to this site motion hook.
+The introducing dot and floor-zone controls have been removed. Hardware inspection uses Sensor and On a machine; there is no casing/inside mode.
 
-## Promising future directions
+## Motion control and lifecycle
 
-- **Equipment history scrubber:** let an operator intentionally compare fixed periods, with a timeline and a visible coverage/source label. This needs a genuine interaction design and dependable data rather than an ambient loop.
-- **Floor through the day:** an intentional day/evening toggle could shift studio lighting and the selected matched observation period. It should never manufacture occupancy or queues from movement data.
-- **Device casing peel:** one deliberate scroll or click could separate the sensor casing, transducers and board with honest construction lines. Keep a compact assembled rest pose and explicit design-study status.
-- **Layer-focused scroll story:** the operator could pause at signal, floor context and brief, with the chosen layer opening slightly. This needs a measured narrative range so the geometry stays legible; it should not hijack native scrolling.
-- **Equipment review breadcrumbs:** a selected machine could connect to an authored review card through a visible source trail. The meaningful next action should lead the motion.
+The founder requested removal of OS reduced-motion behavior. The website therefore uses a saved, explicit Pause motion control. That control settles decorative effects, the card entrance/follower and the installed stack; the functional ten-second timer still closes unpinned cards. There are no prefers-reduced-motion media gates in the shipped source.
 
-Magnetic CTAs are deferred because the current buttons already own hover transforms. Adding a second transform controller would create conflict for little product benefit. Headlines and outer scroll-reveal containers are intentionally left to their existing orchestrated entrance.
+`useSiteMotion({ rootRef, paused })` owns the DOM/SVG layer. IntersectionObserver gates visible loops and finite reveals. MutationObserver registers new chart views and releases removed ones. Hidden documents stop or settle motion. Cleanup disconnects observers/listeners, kills owned timelines and ScrollTriggers, and restores original styles and attributes.
 
-## Lifecycle and integration
+Annotation animation and hardware playback have separate owners. The card's idle movement does not invalidate WebGL; the selected gym sleeps after camera framing settles. Hardware uses demand rendering, bounded history, 30 Hz telemetry updates and DPR capped at 1.5. Fonts, models and lighting resources remain local.
 
-`useSiteMotion({ rootRef, reducedMotion, paused })` is exported both named and default from `src/motion/useSiteMotion.js`; it imports its scoped stylesheet. Call it once with the existing `.site-shell` root ref. Parent owns the user-visible Pause motion button and `data-motion='running'|'paused'` state.
+## Verified
 
-One IntersectionObserver gates the new loops and finite reveals. One child-list MutationObserver registers freshly mounted chart views and retires removed ones; it only watches `open` and `data-machine-selected` attributes, not animation styles. Document visibility stops/settles the records. Pause or reduced-motion prop changes disconnect observers/listeners, kill owned ScrollTriggers/timelines, remove the guide overlay and revert original styles/attributes. The hook adds no independent RAF, timer, scroll hijack, data refresh or WebGL redraw.
+The compiled site passed browser checks for intermediate annotation entry frames, smooth placement, keyboard hourly inspection, synchronized stack/graph values, local/global/offscreen pause and mobile bounds. Five actual-clock cases passed: default closure, replacement-asset deadline, pin/unpin reset, float/leader/visibility/manual control, and a 320 px card under an OS reduced-motion preference. Idle selected-gym WebGL draws stayed at zero while its DOM card floated.
 
-Diagnostic DOM attributes are visible for review: root `data-site-motion-engine` and `data-site-motion-active`; each owner `data-site-motion-state` (`running`, `held`, `settled`). These indicate decorative motion lifecycle, not equipment status.
+The revised diagrams and benefit icons were visually inspected at 1440, 390 and 320 px, including baseline restoration after Pause. Their labels and chart bars remain separated after animation completes.
 
-The existing illustration entry/hover hooks and root reveal effects are separate owners. Parent should disable their motion when globally paused, e.g. pass `animate={!paused}` to illustrations or a combined reduced/paused preference to those existing owners. This hook does not overwrite their transforms.
+## Further directions
 
-## Verified in the integrated site
+- A deliberate equipment-history scrubber with period and coverage labels.
+- A day/evening lighting transition tied to a chosen reporting period.
+- A brief scroll story through sensor signal, floor context and team action.
+- Equipment-review breadcrumbs linking evidence to a focused review.
 
-Observed the introducing dot change opacity/scale, the sage guide dash travel, and the footer drift in the actual browser. The guide reset to zero opacity offscreen; scrolling to the platform left zero new ambient loops active. Pause and OS reduced motion set the engine to settled with zero active loops and removed the pulse overlay; restoring motion recreated exactly one overlay. Nine dashboard tab replacements produced no page errors or duplicate overlays. The right-hand guide was visually inspected so the signal's path is visible between the opaque layers.
-
-After separating render motion from layout, the canvas moved from `-0.1624px` to `-0.738px` while the frame retained `transform: none`. Native Cardio zone and Inspect equipment clicks succeeded without forcing or pre-hovering. Selecting Lat pulldown settled the canvas to an identity transform; its annotation remained aligned. No page errors were observed.
-
-The overview render is deliberately separate from control layout. Native zone and Inspect equipment controls remain stable without forcing browser clicks or adjusting test coordinates.
+These need intentional interactions and dependable data. Movement alone should not manufacture occupancy, queues, selected weight or member identity.

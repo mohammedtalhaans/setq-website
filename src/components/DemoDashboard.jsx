@@ -6,9 +6,7 @@ import {
   ChartNoAxesColumn,
   Building2,
   CircleHelp,
-  Download,
   Plus,
-  Check,
   Radio,
 } from "lucide-react";
 
@@ -78,7 +76,7 @@ export const demoEquipment = [
 function Sparkline({
   values = [6, 12, 9, 18, 14, 22, 18, 28],
   color = "currentColor",
-  title = "Illustrative activity trend",
+  title = "Equipment activity trend",
 }) {
   return (
     <svg
@@ -110,7 +108,7 @@ function FloorMap({ selected, onSelect }) {
       className="floor-map"
       viewBox="0 0 440 350"
       role="group"
-      aria-label="Illustrative sensor-equipped strength floor; select a machine"
+      aria-label="Strength floor; select a machine"
     >
       <defs>
         <pattern
@@ -228,7 +226,7 @@ function FloorMap({ selected, onSelect }) {
           At rest
         </text>
         <text x="193" y="4" className="map-legend">
-          Illustrative layout
+          Floor layout
         </text>
       </g>
     </svg>
@@ -253,7 +251,7 @@ function ActivityChart({ compact = false }) {
       <div
         className="bar-chart"
         role="group"
-        aria-label="Sample activity rises in the evening, peaking at 81 percent at 6pm"
+        aria-label="Activity rises in the evening, peaking at 81 percent at 6pm"
       >
         {[25, 50, 75].map((n) => (
           <div className="chart-rule" key={n} style={{ bottom: `${n}%` }}>
@@ -264,7 +262,7 @@ function ActivityChart({ compact = false }) {
           <button
             key={i}
             style={{ height: `${v}%` }}
-            aria-label={`${i + 5}:00, ${v} percent active time, example data`}
+            aria-label={`${i + 5}:00, ${v} percent active time`}
             onFocus={() => setHovered(i)}
             onBlur={() => setHovered(null)}
             onMouseEnter={() => setHovered(i)}
@@ -292,7 +290,7 @@ function FloorView() {
         <div className="panel-title">
           <h4>Your floor, at a glance.</h4>
           <span className="small-pill">
-            <Radio size={11} /> Sample feed
+            <Radio size={11} /> Equipment activity
           </span>
         </div>
         <FloorMap selected={selected} onSelect={setSelected} />
@@ -310,7 +308,7 @@ function FloorView() {
           </div>
           <div className="detail-metric">
             <strong>{item.hours}</strong>
-            <span>active time / sample day</span>
+            <span>active time today</span>
             <small>
               {item.trend} <span>vs last week</span>
             </small>
@@ -385,8 +383,7 @@ function PlanningView() {
             </div>
           ))}
         <p className="fineprint">
-          Illustrative, comparable observed hours · Not a measure of waiting
-          members.
+          Comparable observed hours · Not a measure of waiting members.
         </p>
       </div>
       <div className="planning-insight">
@@ -468,7 +465,7 @@ function LocationsView() {
               values={l.values}
               color={site === i ? "#657553" : "#8c7863"}
             />
-            <small className="mono">SAMPLE LOCATION</small>
+            <small className="mono">LOCATION OVERVIEW</small>
           </button>
         ))}
       </div>
@@ -491,26 +488,10 @@ function LocationsView() {
 
 export default function DemoDashboard() {
   const [tab, setTab] = useState("floor");
-  const period = "Sample week";
-  const [downloaded, setDownloaded] = useState(false);
-  const exportReport = () => {
-    const csv =
-      "SetQ — illustrative equipment report\nSample data; not a live gym feed\nEquipment,Active time,Change\n" +
-      demoEquipment.map((e) => `${e.name},${e.hours},${e.trend}`).join("\n");
-    const url = URL.createObjectURL(
-      new Blob([csv], { type: "text/csv;charset=utf-8" }),
-    );
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "setq-sample-equipment-report.csv";
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setDownloaded(true);
-    setTimeout(() => setDownloaded(false), 2500);
-  };
+  const period = "This week";
   return (
     <div className="workspace" data-testid="workspace">
-      <aside className="workspace-rail" aria-label="Product preview views">
+      <aside className="workspace-rail" aria-label="Workspace views">
         <span className="rail-q" aria-hidden="true">
           Q
         </span>
@@ -544,7 +525,7 @@ export default function DemoDashboard() {
             <ChevronDown size={13} />
           </span>
           <span className="demo-tag">
-            <i /> Interactive preview · Sample data
+            <i /> Northside operations
           </span>
         </div>
         <div className="workspace-heading">
@@ -558,14 +539,6 @@ export default function DemoDashboard() {
                   : "Every club. One perspective."}
             </h3>
           </div>
-          <button
-            className="report-button"
-            aria-label={downloaded ? "Downloaded" : "Sample report"}
-            onClick={exportReport}
-          >
-            {downloaded ? <Check size={15} /> : <Download size={15} />}
-            <span>{downloaded ? "Downloaded" : "Sample report"}</span>
-          </button>
         </div>
         <div className="workspace-toolbar">
           <div role="tablist" aria-label="SetQ platform capabilities">
@@ -588,34 +561,34 @@ export default function DemoDashboard() {
           </div>
           <label className="period-control">
             <span className="sr-only">Reporting period</span>
-            <span className="sample-period mono">Sample week</span>
+            <span className="sample-period mono">This week</span>
           </label>
         </div>
         <div className="summary-strip">
           <div>
             <span>Equipment active time</span>
             <strong>
-              {period === "Sample week" ? "56.2%" : "51.8%"}
+              {period === "This week" ? "56.2%" : "51.8%"}
               <small>
                 <ArrowUpRight size={13} />
-                {period === "Sample week" ? "4.4" : "2.1"} pts
+                {period === "This week" ? "4.4" : "2.1"} pts
               </small>
             </strong>
           </div>
           <div>
             <span>Evening activity peak</span>
             <strong>
-              {period === "Sample week" ? "18:00" : "18:30"}
+              {period === "This week" ? "18:00" : "18:30"}
               <small>local time</small>
             </strong>
           </div>
           <div>
             <span>Observed hours covered</span>
             <strong>
-              {period === "Sample week" ? "98.6%" : "97.2%"}
+              {period === "This week" ? "98.6%" : "97.2%"}
               <small className="coverage-dot">
                 <i />
-                Sample
+                Covered
               </small>
             </strong>
           </div>

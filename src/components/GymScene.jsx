@@ -365,6 +365,10 @@ function buildGym() {
     context.textBaseline = "middle";
     context.fillText(str, 512, c.height / 2);
     const map = new THREE.CanvasTexture(c);
+    // Front-facing wall planes use increasing U along world +X. Keep canvas
+    // Y correction explicit; a horizontal texture flip would mirror SetQ.
+    map.flipY = true;
+    map.anisotropy = 4;
     map.colorSpace = THREE.SRGBColorSpace;
     resources.textures.add(map);
     const mat = new THREE.MeshBasicMaterial({
@@ -452,7 +456,7 @@ function buildGym() {
     [0.35, 1.15, -3.855],
     "#5a4232",
     [0, 0, 0],
-    "500 230px Arial",
+    "600 340px Arial",
   );
   text(
     "A MORE CONNECTED FLOOR",
@@ -1160,7 +1164,7 @@ function SceneContent({
         cardSize = getCardSize();
       const margin = size.width < 420 ? 12 : 18;
       const headY = cardSize.height + margin + 24;
-      const bottom = size.height - (size.width < 500 ? 74 : 86);
+      const bottom = size.height - 50;
       const head = project(item.topAnchor);
       const yaw = item.rotation || 0;
       let extent = 1;
@@ -1362,7 +1366,7 @@ function StaticGym({ activeZone, onZoneChange }) {
       <svg
         viewBox="0 0 600 430"
         role="img"
-        aria-label="Illustrative gym floor with strength machines, cardio equipment and open floor"
+        aria-label="Gym floor with strength machines, cardio equipment and open floor"
       >
         <defs>
           <filter id="setq-floor-shadow">
@@ -1629,7 +1633,7 @@ export default function GymScene({
       onPointerLeave={() => setHovering(false)}
     >
       <p className="gym-scene__description">
-        Illustrative architectural model of a SetQ-connected gym.{" "}
+        Architectural model of a SetQ-connected gym.{" "}
         {selectedId
           ? `${EQUIPMENT_BY_ID[selectedId].name} selected.`
           : `${LABELS[safeZone]} selected.`}{" "}
@@ -1646,7 +1650,7 @@ export default function GymScene({
           frameloop="demand"
           shadows
           onPointerMissed={closeSelection}
-          fallback="Illustrative architectural gym model"
+          fallback="Architectural gym model"
           gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
           onCreated={({ gl, camera }) => {
             gl.domElement.setAttribute("aria-hidden", "true");

@@ -1,31 +1,25 @@
 import React, {
   Component,
   Suspense,
+  useCallback,
   useEffect,
-  useMemo,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Layers } from "lucide-react";
+import { Canvas, useThree } from "@react-three/fiber";
 import {
   ContactShadows,
   Environment,
   Lightformer,
   OrbitControls,
-  useGLTF,
 } from "@react-three/drei";
-import {
-  ACESFilmicToneMapping,
-  CanvasTexture,
-  MathUtils,
-  SRGBColorSpace,
-} from "three";
+import { ACESFilmicToneMapping } from "three";
+import { HardwareNode, HardwareDimensions } from "./HardwareNode.jsx";
+import { HardwareMechanism } from "./HardwareMechanism.jsx";
+import { HardwareTelemetry, hardwareMotionAt } from "./HardwareTelemetry.jsx";
 import "../styles/hardware-scene.css";
-
-const MODEL_URL = `${import.meta.env.BASE_URL}models/setq-node.glb`;
 const POSTER_URL = `${import.meta.env.BASE_URL}images/setq-node-poster.png`;
-
 class SceneBoundary extends Component {
   state = { failed: false };
   static getDerivedStateFromError() {
@@ -35,168 +29,70 @@ class SceneBoundary extends Component {
     this.props.onFailure?.();
   }
   render() {
-    return this.state.failed ? this.props.fallback : this.props.children;
+    return this.state.failed ? null : this.props.children;
   }
 }
-
-function ModelFallback({ loading = false }) {
-  const [posterMissing, setPosterMissing] = useState(false);
+function Fallback() {
   return (
-    <div
-      className="hardware-scene__fallback"
-      role="img"
-      aria-label="SetQ proposed ultrasonic sensor enclosure"
-    >
-      {!posterMissing ? (
-        <img
-          src={POSTER_URL}
-          onError={() => setPosterMissing(true)}
-          alt="SetQ sensor design"
-        />
-      ) : (
-        <div className="hardware-scene__silhouette">
-          <span>SetQ</span>
-          <i />
-        </div>
-      )}
-      <span className="hardware-scene__fallback-label">
-        {loading ? "Preparing the model" : "Sensor design preview"}
-      </span>
+    <div className="hardware-scene__fallback">
+      <img src={POSTER_URL} alt="SetQ sensor" />
+      <span>SetQ sensor</span>
     </div>
   );
 }
-
-function Node({ inside, reducedMotion, active, onReady }) {
-  const { scene } = useGLTF(MODEL_URL);
-  const invalidate = useThree((state) => state.invalidate);
-  const viewportWidth = useThree((state) => state.viewport.width);
-  const fit = Math.min(1, viewportWidth / 5.4);
-  const rig = useRef();
-  const progress = useRef(inside ? 1 : 0);
-  const model = useMemo(() => {
-    const copy = scene.clone(true);
-    const ownedMaterials = new Map();
-    const ownedTextures = [];
-    const parts = [];
-    let lidLabel = 0;
-    copy.traverse((object) => {
-      if (object.userData.part && Array.isArray(object.userData.explode)) {
-        parts.push({
-          object,
-          rest: object.position.clone(),
-          offset: object.userData.explode,
-        });
-      }
-      if (!object.isMesh) return;
-      object.castShadow = true;
-      object.receiveShadow = true;
-      const finish = (source) => {
-        if (ownedMaterials.has(source)) return ownedMaterials.get(source);
-        const material = source.clone();
-        if (object.parent?.name === "lid" && source.map) {
-          const label = document.createElement("canvas");
-          label.width = 1024;
-          label.height = lidLabel === 0 ? 334 : 128;
-          const context = label.getContext("2d");
-          context.fillStyle = lidLabel === 0 ? "#694333" : "#9a8570";
-          context.font = lidLabel === 0 ? "600 255px Arial" : "400 70px Arial";
-          context.textAlign = "center";
-          context.textBaseline = "middle";
-          context.fillText(
-            lidLabel === 0 ? "SetQ" : "ULTRASONIC  /  US-01",
-            label.width / 2,
-            label.height / 2,
-          );
-          const texture = new CanvasTexture(label);
-          texture.colorSpace = SRGBColorSpace;
-          texture.flipY = false;
-          material.map = texture;
-          material.depthWrite = false;
-          material.polygonOffset = true;
-          material.polygonOffsetFactor = -1;
-          ownedTextures.push(texture);
-          lidLabel += 1;
-        }
-        if (/ivory polymer/i.test(material.name)) {
-          material.color.set("#e8dfcc");
-          material.roughness = 0.45;
-          material.metalness = 0;
-        } else if (/silicone seal/i.test(material.name)) {
-          material.color.set("#5c4033");
-        } else if (/carrier green solder mask/i.test(material.name)) {
-          material.color.set("#50604b");
-        }
-        material.envMapIntensity = 0.75;
-        ownedMaterials.set(source, material);
-        return material;
-      };
-      object.material = Array.isArray(object.material)
-        ? object.material.map(finish)
-        : finish(object.material);
-    });
-    // The GLB root already converts the source's millimetres into glTF metres.
-    // This display scale is uniform, so dimensional proportions remain intact.
-    copy.position.y = -0.00251;
-    return {
-      scene: copy,
-      parts,
-      materials: [...ownedMaterials.values()],
-      textures: ownedTextures,
-    };
-  }, [scene]);
-
+function Camera({ view }) {
+  const { camera, invalidate } = useThree();
+  useLayoutEffect(() => {
+    camera.position.set(
+      ...(view === "machine" ? [0.95, 0.87, 1.5] : [6.4, 4.8, 6.5]),
+    );
+    camera.fov = view === "machine" ? 35 : 32;
+    camera.near = 0.001;
+    camera.lookAt(0, view === "machine" ? 0.48 : 0, 0);
+    camera.updateProjectionMatrix();
+    invalidate();
+  }, [view, camera, invalidate]);
+  return null;
+}
+function Driver({ invalidateRef }) {
+  const invalidate = useThree((s) => s.invalidate);
   useEffect(() => {
-    onReady();
+    invalidateRef.current = invalidate;
     return () => {
-      model.materials.forEach((material) => material.dispose());
-      model.textures.forEach((texture) => texture.dispose());
+      invalidateRef.current = null;
     };
-  }, [model, onReady]);
-  useEffect(() => {
-    if (active) invalidate();
-  }, [inside, active, reducedMotion, invalidate]);
-
-  useFrame((_, delta) => {
-    if (!active) return;
-    const target = inside ? 1 : 0;
-    progress.current = reducedMotion
-      ? target
-      : MathUtils.damp(progress.current, target, 8, Math.min(delta, 0.05));
-    if (Math.abs(progress.current - target) < 0.001) progress.current = target;
-    const amount = progress.current;
-    model.parts.forEach(({ object, rest, offset }) => {
-      object.position.set(
-        rest.x + offset[0] * amount * 0.66,
-        rest.y + offset[1] * amount * 0.66,
-        rest.z + offset[2] * amount * 0.66,
-      );
-    });
-    if (rig.current) {
-      rig.current.scale.setScalar(MathUtils.lerp(100, 75, amount) * fit);
-      rig.current.position.y = MathUtils.lerp(0.1, -0.4, amount) * fit;
-    }
-    if (progress.current !== target) invalidate();
-  });
-
+  }, [invalidate, invalidateRef]);
+  return null;
+}
+function Sensor({ onReady }) {
+  const size = useThree((s) => s.size);
+  const fit = Math.min(1, size.width / size.height / 1.33);
   return (
-    <group
-      ref={rig}
-      scale={(inside ? 75 : 100) * fit}
-      position={[0, (inside ? -0.4 : 0.1) * fit, 0]}
-    >
-      <primitive object={model.scene} dispose={null} />
+    <group scale={(size.width < 400 ? 88 : 112) * fit} position={[0, 0.08, 0]}>
+      <group position={[0, -0.00251, 0]}>
+        <HardwareNode onReady={onReady} />
+        <HardwareDimensions />
+      </group>
     </group>
   );
 }
-
-function Studio({ inside, reducedMotion, active, onReady }) {
+function Studio({
+  view,
+  clock,
+  onReady,
+  active,
+  invalidateRef,
+  reducedMotion,
+}) {
   return (
     <>
-      <ambientLight intensity={0.45} color="#f5ead5" />
-      <directionalLight position={[4, 7, 3]} intensity={2.1} color="#fff7e5" />
+      <Camera view={view} />
+      <Driver invalidateRef={invalidateRef} />
+      <ambientLight intensity={0.5} color="#f5ead5" />
+      <directionalLight position={[4, 7, 3]} intensity={2} color="#fff7e5" />
       <directionalLight
         position={[-4, 2, -3]}
-        intensity={1.25}
+        intensity={1.1}
         color="#f1e6d4"
       />
       <Environment resolution={128} frames={1}>
@@ -219,108 +115,159 @@ function Studio({ inside, reducedMotion, active, onReady }) {
         <Lightformer
           form="rect"
           intensity={3}
-          color="#ffffff"
+          color="#fff"
           position={[0, 2, -4]}
           scale={[5, 2, 1]}
         />
       </Environment>
       <Suspense fallback={null}>
-        <Node
-          inside={inside}
-          reducedMotion={reducedMotion}
-          active={active}
-          onReady={onReady}
-        />
+        {view === "machine" ? (
+          <HardwareMechanism clock={clock} onReady={onReady} />
+        ) : (
+          <Sensor onReady={onReady} />
+        )}
       </Suspense>
       <ContactShadows
-        position={[0, -1.6, 0]}
-        scale={9}
-        far={5.5}
+        key={view}
+        position={[0, view === "machine" ? -0.044 : -1.65, 0]}
+        scale={view === "machine" ? 2 : 9}
+        far={view === "machine" ? 1.5 : 5.5}
         resolution={256}
         blur={3.5}
-        opacity={0.25}
+        opacity={0.23}
         color="#745844"
         smooth={false}
         frames={active ? Infinity : 0}
       />
       <OrbitControls
+        key={view}
         makeDefault
         enabled={active}
         enablePan={false}
         enableZoom={false}
         enableDamping={!reducedMotion}
-        minPolarAngle={0.3}
-        maxPolarAngle={Math.PI * 0.65}
-        target={[0, 0.05, 0]}
+        minPolarAngle={0.25}
+        maxPolarAngle={Math.PI * 0.64}
+        target={view === "machine" ? [0, 0.48, 0] : [0, 0, 0]}
       />
     </>
   );
 }
-
 export default function HardwareScene({
   reducedMotion = false,
   className = "",
 }) {
-  const wrapper = useRef();
-  const [inside, setInside] = useState(false);
-  const [inView, setInView] = useState(false);
-  const [hasEntered, setHasEntered] = useState(false);
-  const [pageVisible, setPageVisible] = useState(true);
-  const [ready, setReady] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const active = inView && pageVisible;
-  const onReady = React.useCallback(() => setReady(true), []);
-  const onFailure = React.useCallback(() => setFailed(true), []);
+  const wrapper = useRef(),
+    telemetry = useRef(),
+    invalidate = useRef(),
+    clock = useRef({ ...hardwareMotionAt(0), peak: 0 }),
+    history = useRef([{ ...hardwareMotionAt(0), peak: 0 }]);
+  const [view, setView] = useState("sensor"),
+    [manualPaused, setManualPaused] = useState(false),
+    [inView, setInView] = useState(false),
+    [hasEntered, setHasEntered] = useState(false),
+    [pageVisible, setPageVisible] = useState(true),
+    [ready, setReady] = useState(false),
+    [failed, setFailed] = useState(false);
+  const active = inView && pageVisible,
+    paused = manualPaused || reducedMotion,
+    playing = view === "machine" && active && ready && !paused && !failed;
+  const onReady = useCallback(() => setReady(true), []),
+    onFailure = useCallback(() => setFailed(true), []);
   useEffect(() => {
-    const element = wrapper.current;
-    if (!element) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         setInView(entry.isIntersecting);
         if (entry.isIntersecting) setHasEntered(true);
       },
-      { rootMargin: "100px", threshold: 0.01 },
+      { threshold: 0.01 },
     );
-    observer.observe(element);
-    const updateVisibility = () =>
-      setPageVisible(document.visibilityState === "visible");
-    updateVisibility();
-    document.addEventListener("visibilitychange", updateVisibility);
+    observer.observe(wrapper.current);
+    const visibility = () =>
+      setPageVisible(
+        !document.hidden && document.visibilityState === "visible",
+      );
+    visibility();
+    document.addEventListener("visibilitychange", visibility);
     return () => {
       observer.disconnect();
-      document.removeEventListener("visibilitychange", updateVisibility);
+      document.removeEventListener("visibilitychange", visibility);
     };
   }, []);
-
+  useEffect(() => {
+    if (view !== "machine") return;
+    clock.current = { ...hardwareMotionAt(0), peak: 0 };
+    history.current = [{ ...clock.current }];
+    telemetry.current?.update(clock.current, history.current);
+    setManualPaused(false);
+    invalidate.current?.();
+  }, [view]);
+  useEffect(() => {
+    if (!playing) return;
+    const started = performance.now(),
+      base = clock.current.time;
+    let raf,
+      last = started;
+    const tick = (now) => {
+      raf = requestAnimationFrame(tick);
+      if (now - last < 1000 / 30) return;
+      last = now - ((now - last) % (1000 / 30));
+      const frame = hardwareMotionAt(base + (now - started) / 1000);
+      frame.peak = Math.max(clock.current.peak, frame.lift);
+      clock.current = frame;
+      history.current.push({ ...frame });
+      while (
+        history.current.length &&
+        history.current[0].time < frame.time - 12
+      )
+        history.current.shift();
+      telemetry.current?.update(frame, history.current);
+      wrapper.current?.setAttribute("data-lift-mm", frame.lift.toFixed(3));
+      wrapper.current?.setAttribute(
+        "data-distance-mm",
+        frame.distance.toFixed(3),
+      );
+      wrapper.current?.setAttribute("data-cycles", frame.cycles);
+      invalidate.current?.();
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [playing]);
   return (
     <div
       className={`hardware-scene ${className}`}
       ref={wrapper}
-      data-state={inside ? "inside" : "assembled"}
+      data-view={view}
+      data-state={view}
       data-ready={ready && !failed}
+      data-playing={playing}
     >
       <div className="hardware-scene__ambient" aria-hidden="true" />
       <div className="hardware-scene__topline">
         <span>SETQ / US–01</span>
-        <span>Design study</span>
+        <span>
+          {view === "sensor" ? "Sensor dimensions" : "Stack movement"}
+        </span>
       </div>
       <div
         className="hardware-scene__viewport"
         role="group"
-        aria-label="Interactive SetQ hardware model. Drag to rotate; use the controls below to see inside."
+        aria-label={
+          view === "sensor"
+            ? "SetQ sensor with width, depth and height dimensions"
+            : "SetQ sensor fixed above a moving weight stack"
+        }
       >
-        {(!ready || failed) && (
-          <ModelFallback loading={!failed && hasEntered} />
-        )}
+        {(!ready || failed) && <Fallback />}
         {hasEntered && !failed && (
-          <SceneBoundary onFailure={onFailure} fallback={null}>
+          <SceneBoundary onFailure={onFailure}>
             <Canvas
               dpr={[1, 1.5]}
               frameloop={active ? "demand" : "never"}
               camera={{
                 position: [6.4, 4.8, 6.5],
                 fov: 32,
-                near: 0.1,
+                near: 0.001,
                 far: 100,
               }}
               gl={{
@@ -329,60 +276,57 @@ export default function HardwareScene({
                 powerPreference: "low-power",
                 toneMapping: ACESFilmicToneMapping,
               }}
-              fallback={<ModelFallback />}
+              fallback={<Fallback />}
               onCreated={({ gl }) => {
-                gl.toneMappingExposure = 1.1;
+                gl.toneMappingExposure = 1.05;
                 gl.domElement.addEventListener("webglcontextlost", onFailure, {
                   once: true,
                 });
               }}
             >
               <Studio
-                inside={inside}
-                reducedMotion={reducedMotion}
+                view={view}
+                clock={clock}
                 active={active}
+                reducedMotion={reducedMotion}
                 onReady={onReady}
+                invalidateRef={invalidate}
               />
             </Canvas>
           </SceneBoundary>
         )}
       </div>
-      <div className="hardware-scene__bottomline">
+      <div className="hardware-scene__viewbar">
         <div
           className="hardware-scene__controls"
           role="group"
-          aria-label="Hardware model view"
+          aria-label="Hardware view"
         >
           <button
             type="button"
-            aria-pressed={!inside}
-            onClick={() => setInside(false)}
-            disabled={!ready || failed}
+            aria-pressed={view === "sensor"}
+            onClick={() => setView("sensor")}
           >
-            Assembled
+            Sensor
           </button>
           <button
             type="button"
-            aria-pressed={inside}
-            onClick={() => setInside(true)}
-            disabled={!ready || failed}
+            aria-pressed={view === "machine"}
+            onClick={() => setView("machine")}
           >
-            Inside <Layers size={12} aria-hidden="true" />
+            On a machine
           </button>
         </div>
-        <span className="hardware-scene__hint">
-          {failed
-            ? "Sensor concept"
-            : inside
-              ? "Seven original assembly layers"
-              : "Drag to explore"}
-        </span>
+        <span className="hardware-scene__hint">Drag to explore</span>
       </div>
-      <span className="hardware-scene__sr" aria-live="polite">
-        {inside
-          ? "Exploded view of the proposed sensor assembly."
-          : "Assembled view of the proposed sensor. Acoustic face points downward."}
-      </span>
+      {view === "machine" && (
+        <HardwareTelemetry
+          ref={telemetry}
+          paused={paused}
+          disabled={reducedMotion || failed}
+          onToggle={() => setManualPaused((value) => !value)}
+        />
+      )}
     </div>
   );
 }

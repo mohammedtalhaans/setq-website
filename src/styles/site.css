@@ -1265,7 +1265,6 @@ dialog::backdrop {
 .hardware-stage .hardware-scene {
   border: 0;
   border-radius: 0;
-  min-height: 0;
 }
 .hardware-stage .hardware-scene__topline {
   font-size: 8px;
@@ -2327,26 +2326,5 @@ dialog::backdrop {
   .hardware-stage .hardware-scene__bottomline {
     left: 20px;
     right: 20px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *:before,
-  *:after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .hero-copy > * {
-    opacity: 1 !important;
-    transform: none !important;
   }
 }

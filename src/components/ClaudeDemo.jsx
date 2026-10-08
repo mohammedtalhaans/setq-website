@@ -43,19 +43,19 @@ const examples = [
   {
     prompt: "Should I add another leg press?",
     intro: "The signal is worth watching. The purchase can wait.",
-    body: "The leg press shows the highest active time in this sample. Compare sustained activity across matching hours before making a capital decision.",
+    body: "The leg press shows the highest active time in this period. Compare sustained activity across matching hours before making a capital decision.",
     note: "Active equipment time does not tell us how many members waited. Pair this evidence with your team’s observations.",
     action: "Create an equipment review",
-    source: "Leg press · Sample 7-day report",
+    source: "Leg press · 7-day report",
     bars: [48, 52, 56, 59, 62, 67, 72],
   },
   {
     prompt: "Compare my locations.",
     intro: "Northside has the strongest equipment activity.",
-    body: "Across this example, Northside shows 56.2% active time, compared with 48% at Riverside and 56% at The Studio.",
+    body: "Across your locations, Northside shows 56.2% active time, compared with 48% at Riverside and 56% at The Studio.",
     note: "Use matched opening hours and comparable equipment to make the comparison useful. Check coverage before carrying a decision across clubs.",
     action: "Prepare a location review",
-    source: "Location overview · Illustrative comparable periods",
+    source: "Location overview · Comparable reporting periods",
     bars: [56.2, 48, 56],
   },
 ];
@@ -73,21 +73,18 @@ export default function ClaudeDemo() {
     setFollowed(false);
     setInput("");
     setCustom(i === undefined);
-    timer.current = setTimeout(
-      () => {
-        setAnswer(
-          i === undefined
-            ? /leg|buy|purchase|machine/i.test(text)
-              ? 1
-              : /location|club|compare/i.test(text)
-                ? 2
-                : 0
-            : i,
-        );
-        setBusy(false);
-      },
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 550,
-    );
+    timer.current = setTimeout(() => {
+      setAnswer(
+        i === undefined
+          ? /leg|buy|purchase|machine/i.test(text)
+            ? 1
+            : /location|club|compare/i.test(text)
+              ? 2
+              : 0
+          : i,
+      );
+      setBusy(false);
+    }, 550);
   };
   const item = examples[answer];
   return (
@@ -96,13 +93,13 @@ export default function ClaudeDemo() {
         <span className="assistant-brand">
           <span className="q-glyph">Q</span> SetQ Intelligence
         </span>
-        <span className="assistant-status">Product preview</span>
+        <span className="assistant-status">Operations intelligence</span>
       </div>
       <div className="assistant-credit">
         <ClaudeCredit compact />
-        <span>Integration in development</span>
+        <span>Equipment evidence, in context</span>
       </div>
-      <div className="prompt-chips" aria-label="Example questions">
+      <div className="prompt-chips" aria-label="Questions about your gym">
         {examples.map((x, i) => (
           <button
             key={x.prompt}
@@ -123,12 +120,12 @@ export default function ClaudeDemo() {
           <div className="thinking-label">
             <span />
             <span />
-            <span /> Preparing a sample briefing
+            <span /> Preparing your briefing
           </div>
         ) : (
           <>
             <span className="eyebrow">
-              {custom ? "RELATED SAMPLE ANSWER" : "ILLUSTRATIVE BRIEFING"}
+              {custom ? "EQUIPMENT INSIGHT" : "YOUR OPERATING BRIEF"}
             </span>
             <h4>{item.intro}</h4>
             <p>{item.body}</p>
@@ -137,7 +134,7 @@ export default function ClaudeDemo() {
                 <span className="mono">
                   {answer === 2 ? "LOCATION COMPARISON" : "EQUIPMENT ACTIVITY"}
                 </span>
-                <span>Illustrative comparison</span>
+                <span>Activity comparison</span>
               </div>
               <div className="evidence-bars">
                 {item.bars.map((n, i) => (
@@ -171,11 +168,12 @@ export default function ClaudeDemo() {
               onClick={() => setFollowed((v) => !v)}
             >
               {followed ? <Check size={14} /> : <Plus size={14} />}{" "}
-              {followed ? "Added to this preview" : item.action}
+              {followed ? "Review selected" : item.action}
             </button>
             {followed && (
               <small className="followup-feedback">
-                Example follow-up added locally. No live task was created.
+                Focus this review on the equipment evidence and your floor
+                team’s observations.
               </small>
             )}
           </>
@@ -199,15 +197,12 @@ export default function ClaudeDemo() {
           maxLength={300}
         />
         <button
-          aria-label="Show a related sample answer"
+          aria-label="Ask about your gym"
           disabled={!input.trim() || busy}
         >
           <ArrowUp size={18} />
         </button>
       </form>
-      <p className="assistant-disclaimer">
-        Interactive example with sample data and prepared answers.
-      </p>
     </div>
   );
 }

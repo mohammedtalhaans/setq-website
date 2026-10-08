@@ -1,3 +1,8 @@
+import {
+  EquipmentArt,
+  OperationsArt,
+  PortfolioArt,
+} from "./DecisionIllustrations.jsx";
 import { useEffect, useId, useRef } from "react";
 import { gsap } from "gsap";
 import "../styles/illustrations.css";
@@ -301,67 +306,62 @@ function useIllustrationMotion(ref, enabled = true) {
   useEffect(() => {
     if (!enabled || !ref.current) return;
     const root = ref.current;
-    const mm = gsap.matchMedia();
-    mm.add(
-      "(prefers-reduced-motion: no-preference)",
-      (context) => {
-        const groups = root.querySelectorAll("[data-isoq-reveal]");
-        let played = false;
-        context.add("reveal", () => {
-          if (played) return;
-          played = true;
-          gsap.fromTo(
-            groups,
-            { y: 12, opacity: 0.2 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.85,
-              stagger: 0.12,
-              ease: "power3.out",
-              overwrite: true,
-            },
-          );
-        });
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              context.reveal();
-              observer.disconnect();
-            }
-          },
-          { threshold: 0.2 },
-        );
-        observer.observe(root);
-        const hover = matchMedia("(hover: hover) and (pointer: fine)");
-        context.add("enter", () => {
-          if (hover.matches)
-            gsap.to(root.querySelectorAll("[data-isoq-lift]"), {
-              y: -5,
-              duration: 0.7,
-              ease: "power3.out",
-              overwrite: true,
-            });
-        });
-        context.add("leave", () =>
-          gsap.to(root.querySelectorAll("[data-isoq-lift]"), {
+    const scope = gsap.context((context) => {
+      const groups = root.querySelectorAll("[data-isoq-reveal]");
+      let played = false;
+      context.add("reveal", () => {
+        if (played) return;
+        played = true;
+        gsap.fromTo(
+          groups,
+          { y: 12, opacity: 0.2 },
+          {
             y: 0,
+            opacity: 1,
+            duration: 0.85,
+            stagger: 0.12,
+            ease: "power3.out",
+            overwrite: true,
+          },
+        );
+      });
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            context.reveal();
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.2 },
+      );
+      observer.observe(root);
+      const hover = matchMedia("(hover: hover) and (pointer: fine)");
+      context.add("enter", () => {
+        if (hover.matches)
+          gsap.to(root.querySelectorAll("[data-isoq-lift]"), {
+            y: -5,
             duration: 0.7,
             ease: "power3.out",
             overwrite: true,
-          }),
-        );
-        root.addEventListener("pointerenter", context.enter);
-        root.addEventListener("pointerleave", context.leave);
-        return () => {
-          observer.disconnect();
-          root.removeEventListener("pointerenter", context.enter);
-          root.removeEventListener("pointerleave", context.leave);
-        };
-      },
-      root,
-    );
-    return () => mm.revert();
+          });
+      });
+      context.add("leave", () =>
+        gsap.to(root.querySelectorAll("[data-isoq-lift]"), {
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          overwrite: true,
+        }),
+      );
+      root.addEventListener("pointerenter", context.enter);
+      root.addEventListener("pointerleave", context.leave);
+      return () => {
+        observer.disconnect();
+        root.removeEventListener("pointerenter", context.enter);
+        root.removeEventListener("pointerleave", context.leave);
+      };
+    }, root);
+    return () => scope.revert();
   }, [ref, enabled]);
 }
 function Illustration({
@@ -623,147 +623,15 @@ export function SensorFloorBrief({ className = "", animate = true }) {
 }
 
 export function EquipmentIllustration(props) {
-  return (
-    <Illustration
-      title="Plan equipment with floor context"
-      description="A squat rack and bench on a measured floor platform, with an adjacent usage strip."
-      {...props}
-    >
-      <g className="isoq-guides">
-        <Stroke
-          points={[
-            [-78, -65, 0],
-            [-78, 80, 0],
-            [78, 80, 0],
-          ]}
-        />
-        <Stroke
-          points={[
-            [-83, -62, 0],
-            [-73, -62, 0],
-          ]}
-        />
-        <Stroke
-          points={[
-            [74, 76, 0],
-            [74, 84, 0],
-          ]}
-        />
-      </g>
-      <g data-isoq-reveal>
-        <Plate x={-65} y={-57} w={130} d={125} h={6} />
-        <Rack x={-42} y={-31} z={6} />
-        <Bench x={13} y={17} z={6} />
-        <Stroke
-          points={[
-            [-54, 51, 7],
-            [-15, 51, 7],
-            [-15, 28, 7],
-          ]}
-          className="isoq-fine"
-        />
-      </g>
-      <g data-isoq-lift data-isoq-reveal>
-        <Plate x={42} y={-68} w={18} d={70} z={15} h={4} />
-        {[6, 11, 7, 14, 10].map((w, i) => (
-          <Stroke
-            key={i}
-            points={[
-              [45, -59 + i * 11, 20],
-              [45 + w, -59 + i * 11, 20],
-            ]}
-            className={i === 3 ? "isoq-accent" : "isoq-fine"}
-          />
-        ))}
-      </g>
-    </Illustration>
-  );
+  return <EquipmentArt {...props} />;
 }
 export function OperationsIllustration(props) {
-  return (
-    <Illustration
-      title="Keep the gym floor running"
-      description="A cable machine with a sensor, plus an inspection sheet showing completed maintenance checks."
-      {...props}
-    >
-      <g data-isoq-reveal>
-        <Plate x={-63} y={-56} w={127} d={116} h={6} />
-        <Stack x={-42} y={-33} z={6} />
-        <Bench x={0} y={28} z={6} />
-      </g>
-      <g data-isoq-lift data-isoq-reveal>
-        <Sheet x={15} y={-65} z={63} w={68} d={66} charts={false} />
-        <Stroke
-          points={[
-            [25, -38, 67],
-            [63, -38, 67],
-          ]}
-          className="isoq-fine"
-        />
-        <Stroke
-          points={[
-            [25, -29, 67],
-            [52, -29, 67],
-          ]}
-          className="isoq-fine"
-        />
-        <path
-          d="M156 226l-21 13q-6 3-9-1t3-8l21-13q-2-10 7-14l7 5-7 5 4 6 8-5q4 10-6 14z"
-          className="isoq-solid"
-        />
-      </g>
-    </Illustration>
-  );
+  return <OperationsArt {...props} />;
 }
 export function PortfolioIllustration(props) {
-  return (
-    <Illustration
-      title="See every gym in one place"
-      description="Three distinct gym floor platforms linked together, each with its own equipment and operating status."
-      {...props}
-    >
-      <g className="isoq-guides">
-        <Stroke
-          points={[
-            [-42, -49, 5],
-            [43, -48, 5],
-            [47, 48, 5],
-            [-40, 47, 5],
-            [-42, -49, 5],
-          ]}
-        />
-      </g>
-      <g data-isoq-reveal>
-        <Plate x={-83} y={-65} w={68} d={51} z={13} h={5} />
-        <Rack x={-72} y={-53} z={18} small />
-        <Sensor x={-28} y={-25} z={20} />
-      </g>
-      <g data-isoq-reveal>
-        <Plate x={12} y={-54} w={73} d={59} z={25} h={5} />
-        <Bench x={25} y={-39} z={30} />
-        <Stroke
-          points={[
-            [23, -2, 31],
-            [71, -2, 31],
-          ]}
-          className="isoq-accent"
-        />
-      </g>
-      <g data-isoq-lift data-isoq-reveal>
-        <Plate x={-39} y={29} w={100} d={65} z={34} h={5} />
-        <Rack x={-25} y={40} z={39} small />
-        <Bench x={13} y={63} z={39} />
-        <Stroke
-          points={[
-            [-29, 87, 40],
-            [-1, 87, 40],
-          ]}
-          className="isoq-fine"
-        />
-      </g>
-    </Illustration>
-  );
+  return <PortfolioArt {...props} />;
 }
+
 export function BriefIllustration(props) {
   return (
     <Illustration
@@ -803,12 +671,18 @@ export function SetQIcon({
   name = "equipment",
   size = 24,
   className = "",
+  animate = true,
   ...props
 }) {
   const paths = {
     equipment: (
       <>
-        <path d="M5 20V4h14v16M5 8h14M3 14h18M8 12v4m8-4v4M3 20h4m10 0h4" />
+        <path d="M5 20V4h14v16M3 20h4m10 0h4" data-icon-draw />
+        <g data-icon-weight>
+          <path d="M3 13h18" />
+          <rect x="5" y="10" width="2" height="6" rx=".6" fill="#f5f2eb" />
+          <rect x="17" y="10" width="2" height="6" rx=".6" fill="#f5f2eb" />
+        </g>
         <path d="M8 5v2m8-2v2" />
       </>
     ),
@@ -820,12 +694,43 @@ export function SetQIcon({
     ),
     portfolio: (
       <>
-        <path d="m3 8 9-5 9 5-9 5zM3 12l9 5 9-5M3 16l9 5 9-5" />
+        <path d="M3 3v17h18" data-icon-draw />
+        <rect
+          x="5"
+          y="14"
+          width="3"
+          height="4"
+          rx=".5"
+          fill="#f5f2eb"
+          data-icon-bar
+        />
+        <rect
+          x="11"
+          y="11"
+          width="3"
+          height="7"
+          rx=".5"
+          fill="#f5f2eb"
+          data-icon-bar
+        />
+        <rect
+          x="17"
+          y="7"
+          width="3"
+          height="11"
+          rx=".5"
+          fill="#dde4d2"
+          data-icon-bar
+        />
+        <path d="m5 9 7-4 5 1 4-3" stroke="#889775" data-icon-draw />
+        <circle cx="12" cy="5" r="1" fill="#889775" stroke="none" />
       </>
     ),
     brief: (
       <>
-        <path d="M6 3h12v18H6zM9 7h6M9 10h4m-4 6 2 2 4-4" />
+        <path d="M6 3h12v18H6z" data-icon-draw />
+        <path d="M9 7h6M9 10h4" />
+        <path d="m9 16 2 2 4-4" stroke="#889775" data-icon-check />
       </>
     ),
     sensor: (
@@ -848,6 +753,8 @@ export function SetQIcon({
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
+      data-icon-animate={String(animate)}
+      data-icon-name={name}
       {...props}
     >
       {paths[name] || paths.equipment}

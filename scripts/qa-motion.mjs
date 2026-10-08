@@ -242,19 +242,26 @@ async function sampleSiteLoop(page, count = 8, interval = 120) {
   const samples = [];
   for (let i = 0; i < count; i += 1) {
     samples.push(
-      await page.locator(".hero-topline i").evaluate((dot) => ({
-        opacity: Number(getComputedStyle(dot).opacity),
-        transform: getComputedStyle(dot).transform,
-        state: dot
-          .closest(".hero-topline")
-          .getAttribute("data-site-motion-state"),
-      })),
+      await page
+        .locator(".closing-orbit circle")
+        .first()
+        .evaluate((dot) => ({
+          opacity: Number(getComputedStyle(dot).opacity),
+          transform: getComputedStyle(dot).transform,
+          cx: +dot.getAttribute("cx"),
+          cy: +dot.getAttribute("cy"),
+          state: dot
+            .closest(".closing-orbit")
+            .getAttribute("data-site-motion-state"),
+        })),
     );
     if (i < count - 1) await page.waitForTimeout(interval);
   }
   return samples;
 }
 const siteLoopMoves = (samples) =>
+  range(samples, "cx") > 0.01 ||
+  range(samples, "cy") > 0.01 ||
   range(samples, "opacity") > 0.005 ||
   new Set(samples.map((sample) => sample.transform)).size > 1;
 const range = (samples, key) =>
@@ -468,13 +475,14 @@ try {
             ),
             "Leader displacement and card displacement diverge",
           );
-          await scrollTo(page.locator(".hero-topline"));
+          await scrollTo(page.locator(".closing-section"));
           const siteLoop = await sampleSiteLoop(page, 12, 120);
           assert.ok(
             siteLoopMoves(siteLoop),
-            "The visible introduction signal has no deliberate site motion",
+            "The visible closing orbit has no deliberate site motion",
           );
 
+          await scrollTo(page.locator(".gym-scene"));
           await moveTo(page, page.locator(".machine-annotation__surface"));
           await page.waitForTimeout(450);
           assertStill(await sampleFrames(page, 8, 100));
@@ -526,7 +534,7 @@ try {
             "paused",
           );
           await scrollTo(page.locator(".gym-scene"));
-          await scrollTo(page.locator(".hero-topline"));
+          await scrollTo(page.locator(".closing-section"));
           await page.waitForTimeout(400);
           assertStill(await sampleFrames(page, 8, 100), { rest: true });
           assert.equal(
@@ -566,7 +574,7 @@ try {
             await page.locator(".site-shell").getAttribute("data-motion"),
             "running",
           );
-          await scrollTo(page.locator(".hero-topline"));
+          await scrollTo(page.locator(".closing-section"));
           await page.waitForTimeout(150);
           assert.ok(
             siteLoopMoves(await sampleSiteLoop(page, 12, 120)),
@@ -593,7 +601,7 @@ try {
         }
       },
     ),
-    runCase("reduced motion and 320px annotation", async () => {
+    runCase("explicit motion preference and 320px annotation", async () => {
       const { page, context, errors } = await createPage({
         width: 320,
         reducedMotion: "reduce",
@@ -603,20 +611,19 @@ try {
         assert.equal(
           await page
             .getByRole("button", { name: "Reduced motion", exact: true })
-            .isDisabled(),
-          true,
+            .count(),
+          0,
         );
         assert.equal(
           await page.locator(".site-shell").getAttribute("data-motion"),
-          "paused",
+          "running",
         );
-        await page.waitForTimeout(350);
-        const stationary = await sampleFrames(page, 8, 100);
-        assertStill(stationary, { rest: true });
-        assert.equal(
-          siteLoopMoves(await sampleSiteLoop(page)),
-          false,
-          "Reduced motion still runs the site signal loop",
+        await releaseInteraction(page);
+        await page.waitForTimeout(1900);
+        const stationary = await sampleFrames(page, 8, 120);
+        assert.ok(
+          range(stationary, "offset") > 0.2,
+          "Explicit motion control still follows the OS preference",
         );
         assert.ok(
           stationary.every(

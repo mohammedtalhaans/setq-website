@@ -49,21 +49,6 @@ function Logo({ className = "" }) {
   );
 }
 
-function useReducedMotion() {
-  const [reduced, setReduced] = useState(() =>
-    typeof matchMedia === "function"
-      ? matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false,
-  );
-  useEffect(() => {
-    const m = matchMedia("(prefers-reduced-motion: reduce)");
-    const cb = () => setReduced(m.matches);
-    m.addEventListener("change", cb);
-    return () => m.removeEventListener("change", cb);
-  }, []);
-  return reduced;
-}
-
 class SceneBoundary extends React.Component {
   state = { error: false };
   static getDerivedStateFromError() {
@@ -248,9 +233,7 @@ function PrivacyDialog({ dialogRef }) {
           <em>to your information.</em>
         </h2>
         <p>
-          This product preview does not use tracking cookies, third-party
-          analytics, or a connected gym feed. Example equipment data and
-          assistant responses are illustrative.
+          This website does not use tracking cookies or third-party analytics.
         </p>
         <p>
           Your motion preference is saved on this device. The enquiry form
@@ -286,7 +269,7 @@ const faqs = [
   ],
   [
     "Does SetQ replace our membership software?",
-    "SetQ’s initial focus is equipment intelligence, floor operations, and planning. It is designed to sit alongside the tools you already use. Billing and access control are outside the current preview.",
+    "SetQ’s initial focus is equipment intelligence, floor operations, and planning. It is designed to sit alongside the tools you already use. Membership billing and access control remain with your existing tools.",
   ],
   [
     "Can we use the platform today?",
@@ -378,7 +361,6 @@ export default function App() {
   const pageRef = useRef(),
     contactRef = useRef(),
     privacyRef = useRef();
-  const reducedMotion = useReducedMotion();
   const [motionPaused, setMotionPaused] = useState(() => {
     try {
       return (
@@ -389,8 +371,8 @@ export default function App() {
       return false;
     }
   });
-  const motionOff = reducedMotion || motionPaused;
-  useSiteMotion({ rootRef: pageRef, reducedMotion, paused: motionPaused });
+  const motionOff = motionPaused;
+  useSiteMotion({ rootRef: pageRef, paused: motionPaused });
   useEffect(() => {
     try {
       window.localStorage.setItem("setq-motion-paused", String(motionPaused));
@@ -425,60 +407,55 @@ export default function App() {
       });
       return;
     }
-    const mm = gsap.matchMedia();
-    mm.add(
-      "(prefers-reduced-motion: no-preference)",
-      () => {
-        const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
-        intro
-          .fromTo(
-            ".hero-copy > *",
-            { y: 24, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.9, stagger: 0.085 },
-            0.1,
-          )
-          .fromTo(
-            ".hero-scene-frame",
-            { opacity: 0 },
-            { opacity: 1, duration: 1.2 },
-            0.3,
-          )
-          .fromTo(
-            ".hero-footnote",
-            { opacity: 0, y: 8 },
-            { opacity: 1, y: 0, duration: 0.8 },
-            0.8,
-          );
-        gsap.utils.toArray("[data-reveal]").forEach((el) =>
-          gsap.fromTo(
-            el,
-            { y: 24, opacity: 0.15 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.85,
-              ease: "power3.out",
-              scrollTrigger: { trigger: el, start: "top 90%", once: true },
-            },
-          ),
+    const context = gsap.context(() => {
+      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+      intro
+        .fromTo(
+          ".hero-copy > *",
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, stagger: 0.085 },
+          0.1,
+        )
+        .fromTo(
+          ".hero-scene-frame",
+          { opacity: 0 },
+          { opacity: 1, duration: 1.2 },
+          0.3,
+        )
+        .fromTo(
+          ".hero-footnote",
+          { opacity: 0, y: 8 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          0.8,
         );
-        gsap.utils.toArray("[data-draw]").forEach((el) => {
-          const length = el.getTotalLength();
-          gsap.fromTo(
-            el,
-            { strokeDasharray: length, strokeDashoffset: length },
-            {
-              strokeDashoffset: 0,
-              duration: 1.8,
-              ease: "power2.inOut",
-              scrollTrigger: { trigger: el, start: "top 90%", once: true },
-            },
-          );
-        });
-      },
-      pageRef,
-    );
-    return () => mm.revert();
+      gsap.utils.toArray("[data-reveal]").forEach((el) =>
+        gsap.fromTo(
+          el,
+          { y: 24, opacity: 0.15 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
+          },
+        ),
+      );
+      gsap.utils.toArray("[data-draw]").forEach((el) => {
+        const length = el.getTotalLength();
+        gsap.fromTo(
+          el,
+          { strokeDasharray: length, strokeDashoffset: length },
+          {
+            strokeDashoffset: 0,
+            duration: 1.8,
+            ease: "power2.inOut",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
+          },
+        );
+      });
+    }, pageRef);
+    return () => context.revert();
   }, [motionOff]);
   useEffect(() => {
     const key = (e) => {
@@ -487,23 +464,6 @@ export default function App() {
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
   }, []);
-  const zones = {
-    strength: {
-      label: "Strength floor",
-      caption: "A little signal. A clearer decision.",
-      metric: "Equipment insights",
-    },
-    cardio: {
-      label: "Cardio zone",
-      caption: "One considered view of your space.",
-      metric: "An illustrative gym",
-    },
-    recovery: {
-      label: "Open floor",
-      caption: "Plan the space around the equipment.",
-      metric: "A view of the whole floor",
-    },
-  };
   return (
     <div
       ref={pageRef}
@@ -547,12 +507,6 @@ export default function App() {
       </header>
       <main id="main">
         <section className="hero section-wide" aria-labelledby="hero-title">
-          <div className="hero-topline">
-            <span>
-              <i /> INTRODUCING SETQ
-            </span>
-            <span>EARLY ACCESS · BUILT FOR GYM OPERATORS</span>
-          </div>
           <div className="hero-grid">
             <div className="hero-copy">
               <span className="eyebrow hero-category">
@@ -609,34 +563,9 @@ export default function App() {
                   />
                 </Suspense>
               </SceneBoundary>
-              <div className="scene-floating-label" hidden={!!selectedMachine}>
-                <span className="signal-icon">
-                  <Radio size={15} />
-                </span>
-                <div>
-                  <span className="mono">{zones[activeZone].metric}</span>
-                  <span>{zones[activeZone].caption}</span>
-                </div>
-              </div>
-              <div className="scene-bottom">
-                <div
-                  className="zone-select"
-                  aria-label="Explore the illustrative gym"
-                >
-                  {Object.entries(zones).map(([id, zone]) => (
-                    <button
-                      key={id}
-                      aria-pressed={activeZone === id}
-                      onClick={() => setActiveZone(id)}
-                    >
-                      {zone.label}
-                    </button>
-                  ))}
-                </div>
-                <span className="scene-caption">
-                  Illustrative gym · Click equipment to inspect
-                </span>
-              </div>
+              <span className="scene-inspect-hint">
+                Select equipment to explore its activity.
+              </span>
             </div>
           </div>
           <div className="hero-footnote">
@@ -707,7 +636,7 @@ export default function App() {
             <span>
               Go ahead. Change the view, select a machine, explore the detail.
             </span>
-            <span className="mono">SAMPLE DATA · DESIGNED EXPERIENCE</span>
+            <span className="mono">CONNECTED EQUIPMENT INTELLIGENCE</span>
           </div>
         </section>
         <section className="intelligence-section section-pad" id="intelligence">
@@ -879,8 +808,8 @@ export default function App() {
             </h2>
             <p>
               Your gym already has a floor worth understanding. Our compact
-              ultrasonic sensor concept is designed to bring compatible
-              equipment into view.
+              ultrasonic sensor is designed to bring compatible equipment into
+              view.
             </p>
             <div className="hardware-features">
               <div>
@@ -908,9 +837,6 @@ export default function App() {
             <button className="text-link" onClick={openContact}>
               Discuss your floor’s fit <ArrowUpRight size={16} />
             </button>
-            <p className="hardware-caption">
-              Proposed design. Installation and performance are being validated.
-            </p>
           </div>
           <div data-reveal>
             <Hardware reducedMotion={motionOff} />
@@ -1013,24 +939,15 @@ export default function App() {
             <span className="sr-only">Copyright </span>{" "}
             {new Date().getFullYear()} SetQ
           </span>
-          <span>EARLY ACCESS · PRODUCT PREVIEW</span>
+          <span>FLOOR INTELLIGENCE · BUILT FOR OPERATORS</span>
           <button
             className="motion-toggle"
             aria-pressed={motionOff}
-            disabled={reducedMotion}
             onClick={() => setMotionPaused((value) => !value)}
-            title={
-              reducedMotion
-                ? "Your device requests reduced motion"
-                : "Control decorative animation throughout the site"
-            }
+            title="Control animation throughout the site"
           >
             {motionOff ? <Play size={12} /> : <Pause size={12} />}{" "}
-            {reducedMotion
-              ? "Reduced motion"
-              : motionPaused
-                ? "Resume motion"
-                : "Pause motion"}
+            {motionPaused ? "Resume motion" : "Pause motion"}
           </button>
           <button onClick={() => privacyRef.current.showModal()}>
             Privacy

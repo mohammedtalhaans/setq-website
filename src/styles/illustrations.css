@@ -68,15 +68,223 @@
   flex: none;
   vertical-align: middle;
 }
+.setq-decision-art rect,
+.setq-decision-art line,
+.setq-icon rect,
+.setq-icon path,
+.setq-icon circle {
+  vector-effect: non-scaling-stroke;
+}
+.setq-decision-art {
+  color: #5a4232;
+}
+.setq-decision-art text {
+  fill: #5a4232;
+  stroke: none;
+  font-family: "Instrument Sans Variable", sans-serif;
+}
+.art-card {
+  fill: #fffdf8;
+  stroke: #a9967e;
+  stroke-width: 1;
+}
+.art-card-side {
+  fill: #d9cebc;
+  stroke: #b6a58a;
+  stroke-width: 0.7;
+}
+.art-ground {
+  fill: #5a4232;
+  opacity: 0.075;
+  stroke: none;
+}
+.art-metal {
+  fill: #80664d;
+  stroke: #5a4232;
+  stroke-width: 1.1;
+}
+.art-machine-back {
+  fill: #eee6d9;
+  stroke: #b6a58e;
+  stroke-width: 1;
+}
+.art-machine-shadow {
+  fill: #d4c6b1;
+  stroke: none;
+}
+.art-frame {
+  fill: none;
+  stroke: #5a4232;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.art-rail {
+  fill: none;
+  stroke: #aa9a82;
+  stroke-width: 2;
+}
+.art-weight {
+  fill: #6b5844;
+  stroke: #463626;
+  stroke-width: 0.7;
+}
+.art-pin {
+  fill: #ccb78f;
+  stroke: none;
+}
+.art-cable {
+  fill: none;
+  stroke: #5a4232;
+  stroke-width: 1.4;
+}
+.art-pulley {
+  fill: #d8c7a7;
+  stroke: #8f785a;
+  stroke-width: 1.1;
+}
+.art-pullbar {
+  fill: none;
+  stroke: #73614c;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.art-pad {
+  fill: #889775;
+  stroke: #5d6f4a;
+  stroke-width: 1;
+}
+.art-sensor {
+  fill: #fffdf8;
+  stroke: #8b795e;
+  stroke-width: 1;
+}
+.art-status {
+  fill: #889775;
+  stroke: none;
+}
+.art-label {
+  font-size: 13px;
+  font-weight: 550;
+  letter-spacing: -0.15px;
+}
+.art-number {
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+.art-number-unit {
+  font-size: 19px;
+  letter-spacing: 0;
+}
+.art-meta {
+  font-size: 11px;
+  fill: #7b6b55 !important;
+}
+.art-object-caption {
+  font-size: 11px;
+  fill: #7b6b55 !important;
+}
+.art-chart-rule {
+  fill: none;
+  stroke: #d4cbb9;
+  stroke-width: 0.8;
+}
+.art-bar {
+  fill: #c7cdb7;
+  stroke: none;
+}
+.art-bar-highlight {
+  fill: #889775;
+  stroke: none;
+}
+.art-route {
+  fill: none;
+  stroke: #889775;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+.art-clipboard-clip {
+  fill: #796149;
+  stroke: #5a4232;
+  stroke-width: 1;
+}
+.art-clip-light {
+  fill: #ccbca4;
+  stroke: none;
+}
+.art-check-circle {
+  fill: #e6eadb;
+  stroke: #b6c1a3;
+  stroke-width: 0.9;
+}
+.art-pending-circle {
+  fill: #fffdf8;
+  stroke: #c9bca7;
+  stroke-width: 1;
+}
+.art-check {
+  fill: none;
+  stroke: #62764b;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.art-task {
+  font-size: 12px;
+  font-weight: 450;
+}
+.art-text-rule {
+  fill: none;
+  stroke: #d1c7b5;
+  stroke-width: 1;
+}
+.art-building-face {
+  fill: #f2ece0;
+  stroke: #9c8569;
+  stroke-width: 1.2;
+}
+.art-building-roof {
+  fill: #9b8163;
+  stroke: #66503a;
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+.art-window {
+  fill: #d6dfca;
+  stroke: #9ba788;
+  stroke-width: 0.8;
+}
+.art-door {
+  fill: #fffdf8;
+  stroke: #ab997e;
+  stroke-width: 0.9;
+}
+.art-building-ground {
+  fill: none;
+  stroke: #6b563f;
+  stroke-width: 1.2;
+}
+.art-brick-line {
+  fill: none;
+  stroke: #d3c5af;
+  stroke-width: 0.7;
+}
+.art-club-name {
+  font-size: 13px;
+  font-weight: 550;
+}
+.art-club-metric {
+  font-size: 16px;
+  font-weight: 500;
+}
+.art-club-unit {
+  font-size: 10px;
+  font-weight: 400;
+  fill: #7b6b55;
+}
 @media (max-width: 600px) {
   .isoq-callouts {
     display: none;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .setq-illustration [data-isoq-lift],
-  .setq-illustration [data-isoq-reveal] {
-    transform: none !important;
-    opacity: 1 !important;
   }
 }
