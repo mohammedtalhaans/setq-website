@@ -1,0 +1,82 @@
+.setq-illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  color: #5a4232;
+}
+.setq-illustration path,
+.setq-illustration ellipse,
+.setq-illustration circle {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.isoq-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.15;
+}
+.isoq-solid {
+  fill: #f5f2eb;
+  stroke: currentColor;
+  stroke-width: 1.15;
+}
+.isoq-crease,
+.isoq-fine {
+  fill: none;
+  stroke: #a39787;
+  stroke-width: 0.8;
+}
+.isoq-accent {
+  stroke: #889775;
+  stroke-width: 1.5;
+}
+.isoq-dot {
+  fill: #889775;
+  stroke: none;
+}
+.isoq-guides {
+  fill: none;
+  stroke: #b9afa2;
+  stroke-width: 0.8;
+  stroke-dasharray: 3 6;
+}
+.isoq-guides .isoq-line {
+  stroke: #b9afa2;
+  stroke-width: 0.8;
+}
+.isoq-floor-grid .isoq-line {
+  stroke: #d2c9bc;
+  stroke-width: 0.7;
+}
+.isoq-callouts {
+  fill: #8a7b6b;
+  stroke: #b9afa2;
+  stroke-width: 0.8;
+}
+.isoq-callouts text {
+  stroke: none;
+  font:
+    9px/1.2 "IBM Plex Mono",
+    ui-monospace,
+    monospace;
+  letter-spacing: 0.6px;
+}
+.setq-icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+@media (max-width: 600px) {
+  .isoq-callouts {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .setq-illustration [data-isoq-lift],
+  .setq-illustration [data-isoq-reveal] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

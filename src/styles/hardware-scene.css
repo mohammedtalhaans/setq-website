@@ -1,0 +1,189 @@
+.hardware-scene {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 430px;
+  height: 100%;
+  overflow: hidden;
+  color: #624a39;
+  font-family: "Instrument Sans Variable", sans-serif;
+  background: #ece5d7;
+  border: 1px solid rgba(109, 78, 52, 0.12);
+  border-radius: 24px;
+}
+.hardware-scene__ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at 43% 27%,
+    #f8f3e9 0%,
+    #f1e9da 44%,
+    #e8ddcb 100%
+  );
+}
+.hardware-scene__viewport {
+  position: absolute;
+  inset: 0;
+}
+.hardware-scene__viewport canvas {
+  display: block;
+  touch-action: pan-y !important;
+}
+.hardware-scene__topline,
+.hardware-scene__bottomline {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  z-index: 2;
+  pointer-events: none;
+}
+.hardware-scene__topline {
+  top: 24px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.035em;
+}
+.hardware-scene__topline span:last-child {
+  color: #8f7b63;
+}
+.hardware-scene__bottomline {
+  bottom: 22px;
+}
+.hardware-scene__controls {
+  flex-shrink: 0;
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border: 1px solid rgba(102, 79, 51, 0.13);
+  border-radius: 999px;
+  background: rgba(255, 250, 240, 0.7);
+  backdrop-filter: blur(12px);
+  pointer-events: auto;
+}
+.hardware-scene__controls button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 10px 15px;
+  min-height: 38px;
+  font:
+    500 11px "Instrument Sans Variable",
+    sans-serif;
+  color: #725e49;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.18s,
+    color 0.18s;
+}
+.hardware-scene__controls button[aria-pressed="true"] {
+  background: #4c2c20;
+  color: #fff8ec;
+}
+.hardware-scene__controls button:focus-visible {
+  outline: 2px solid #9c593d;
+  outline-offset: 3px;
+}
+.hardware-scene__controls button:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+.hardware-scene__controls button span {
+  margin-left: 5px;
+}
+.hardware-scene__hint {
+  font-size: 10px;
+  color: #856c51;
+}
+.hardware-scene__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.hardware-scene__fallback img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.hardware-scene__fallback-label {
+  position: absolute;
+  bottom: 86px;
+  color: #8d755d;
+  font-size: 11px;
+}
+.hardware-scene__silhouette {
+  width: 52%;
+  max-width: 290px;
+  aspect-ratio: 36 / 29;
+  display: grid;
+  place-items: center;
+  transform: perspective(700px) rotateX(53deg) rotateZ(-27deg);
+  border: 1px solid #c4b59d;
+  border-bottom: 14px solid #cdbd9f;
+  border-radius: 26px;
+  background: linear-gradient(150deg, #f4ead8, #dfd1b9);
+  box-shadow:
+    -14px 45px 32px rgba(104, 73, 45, 0.17),
+    0 1px 0 #fff6e3 inset;
+}
+.hardware-scene__silhouette span {
+  font:
+    600 33px "Instrument Sans Variable",
+    sans-serif;
+  letter-spacing: -0.08em;
+  color: #604936;
+}
+.hardware-scene__silhouette i {
+  position: absolute;
+  width: 34px;
+  height: 7px;
+  background: #3c3127;
+  right: -6px;
+  bottom: 24px;
+  border-radius: 4px;
+}
+.hardware-scene__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 600px) {
+  .hardware-scene {
+    min-height: 350px;
+    border-radius: 18px;
+  }
+  .hardware-scene__topline,
+  .hardware-scene__bottomline {
+    left: 18px;
+    right: 18px;
+  }
+  .hardware-scene__bottomline {
+    gap: 8px;
+  }
+  .hardware-scene__hint {
+    max-width: 70px;
+    text-align: right;
+    font-size: 9px;
+  }
+  .hardware-scene__controls button {
+    padding: 9px 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hardware-scene__controls button {
+    transition: none;
+  }
+}

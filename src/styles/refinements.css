@@ -1,0 +1,801 @@
+/* Quiet interfaces still need legible labels. Warm ink replaces low-contrast tan. */
+:root {
+  --muted: #6e6659;
+}
+.hero-topline,
+.hero-small,
+.hero-footnote,
+.scene-toplabel,
+.scene-caption,
+.scene-floating-label .mono,
+.workspace-caption,
+.hardware-copy .hardware-caption,
+.hardware-topline .mono,
+.hardware-bottomline .mono,
+.hardware-status,
+.closing-note,
+.footer-links > div > span:last-child,
+.footer-bottom {
+  color: #786b57;
+}
+.claude-credit {
+  color: #796c58;
+}
+.claude-credit img {
+  opacity: 0.85;
+}
+.claude-credit.dark {
+  color: #cbc3b3;
+}
+.claude-credit.dark img {
+  opacity: 0.88;
+}
+.demo-tag,
+.workspace-heading .eyebrow,
+.workspace-toolbar [role="tab"],
+.summary-strip > div > span,
+.summary-strip small,
+.coverage-dot,
+.equipment-detail .eyebrow,
+.activity-state,
+.detail-metric > span,
+.detail-metric small span,
+.detail-sub,
+.fineprint,
+.chart-head,
+.chart-head .mono,
+.chart-axis,
+.table-labels,
+.equipment-row em,
+.planning-insight > .eyebrow,
+.planning-insight p,
+.insight-source,
+.location-card p,
+.location-card > span,
+.location-card small,
+.locations-bottom p,
+.locations-bottom .eyebrow {
+  color: #7b6a51 !important;
+}
+.workspace-toolbar [role="tab"][aria-selected="true"] {
+  color: #51402d !important;
+}
+.summary-strip small,
+.positive {
+  color: #5e7544 !important;
+}
+.negative {
+  color: #7d6248;
+}
+.small-pill {
+  color: #5a6c40;
+}
+.period-control,
+.sample-period {
+  color: #7b6a51;
+  font-size: 9px;
+}
+.sample-period {
+  border: 1px solid #e5ddcf;
+  padding: 7px 9px;
+  border-radius: 4px;
+}
+.chart-rule span {
+  color: #867458;
+}
+.map-caption,
+.map-machine-label,
+.map-legend {
+  fill: #786950;
+}
+.map-caption {
+  font-size: 8px;
+}
+.map-legend {
+  font-size: 9px;
+}
+.workspace-heading .eyebrow,
+.equipment-detail .eyebrow {
+  font-size: 8px;
+}
+.workspace-location {
+  font-size: 11px;
+}
+.demo-tag {
+  font-size: 9px;
+}
+.workspace-toolbar [role="tab"] {
+  font-size: 11px;
+}
+.summary-strip > div > span {
+  font-size: 10px;
+}
+.summary-strip small {
+  font-size: 9px;
+}
+.panel-title h4 {
+  font-size: 12px;
+}
+.small-pill {
+  font-size: 8px;
+}
+.detail-title h4 {
+  font-size: 21px;
+}
+.activity-state {
+  font-size: 10px;
+}
+.detail-metric > span {
+  font-size: 10px;
+}
+.detail-metric small,
+.detail-sub {
+  font-size: 9px;
+}
+.detail-metric small span {
+  font-size: 8px;
+}
+.fineprint {
+  font-size: 9px !important;
+}
+.chart-head {
+  font-size: 10px;
+}
+.chart-head .mono,
+.chart-axis {
+  font-size: 8px;
+}
+.chart-rule span {
+  font-size: 7px;
+}
+.activity-chart {
+  min-height: 150px;
+}
+.bar-chart {
+  height: 85px;
+}
+.report-button {
+  font-size: 10px;
+}
+.planning-table .panel-title {
+  gap: 14px;
+}
+.segmented button {
+  font-size: 8px;
+}
+.table-labels {
+  font-size: 9px;
+}
+.equipment-row {
+  font-size: 11px;
+}
+.equipment-row em {
+  font-size: 9px;
+}
+.equipment-row b,
+.equipment-row > span:last-child {
+  font-size: 10px;
+}
+.planning-insight > .eyebrow {
+  font-size: 8px;
+}
+.planning-insight p {
+  font-size: 11px;
+}
+.insight-source {
+  font-size: 9px;
+}
+.location-card p {
+  font-size: 10px;
+}
+.location-card > span {
+  font-size: 9px;
+}
+.location-card small {
+  font-size: 8px;
+}
+.locations-bottom .eyebrow {
+  font-size: 8px;
+}
+.locations-bottom p {
+  font-size: 11px;
+}
+.workspace-rail button,
+.rail-bottom {
+  color: #87704f;
+}
+.assistant-credit > span:last-child,
+.assistant-status,
+.assistant-answer > .eyebrow,
+.assistant-answer > p,
+.assistant-answer .assistant-note,
+.answer-source,
+.assistant-evidence > div:first-child,
+.evidence-axis,
+.followup-feedback,
+.assistant-disclaimer {
+  color: #7e684a;
+}
+.assistant-input input::placeholder {
+  color: #897458;
+}
+.prompt-chips button {
+  color: #786043;
+}
+.prompt-chips button[aria-pressed="true"] {
+  color: #546737;
+}
+.followup-button {
+  color: #766042;
+}
+.assistant-nav {
+  padding: 19px 22px;
+}
+.assistant-brand {
+  font-size: 13px;
+}
+.assistant-status {
+  font-size: 8px;
+}
+.assistant-credit .claude-credit {
+  font-size: 10px;
+}
+.assistant-credit > span:last-child {
+  font-size: 8px;
+}
+.assistant-credit {
+  padding: 15px 22px 2px;
+}
+.prompt-chips {
+  padding: 18px 22px 0;
+}
+.prompt-chips button {
+  font-size: 10px;
+  padding: 8px 11px;
+  gap: 7px;
+}
+.assistant-answer {
+  padding: 25px 25px 20px;
+  min-height: 390px;
+}
+.assistant-answer > .eyebrow {
+  font-size: 8px;
+}
+.assistant-answer > h4 {
+  font-size: 26px;
+  max-width: 420px;
+}
+.assistant-answer > p {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.assistant-answer .assistant-note {
+  font-size: 11px;
+}
+.assistant-evidence > div:first-child,
+.assistant-evidence .mono {
+  font-size: 8px;
+}
+.evidence-axis {
+  font-size: 7px !important;
+}
+.answer-source {
+  font-size: 8px;
+}
+.followup-button {
+  font-size: 10px;
+}
+.followup-feedback {
+  font-size: 9px;
+}
+.assistant-input input {
+  font-size: 12px;
+}
+.assistant-input button {
+  width: 34px;
+  height: 34px;
+}
+.assistant-disclaimer {
+  font-size: 8px;
+  padding: 12px 13px 17px;
+}
+.assistant-input {
+  margin: 0 22px;
+}
+.evidence-axis {
+  gap: 12px;
+}
+.evidence-axis span {
+  min-width: 0;
+  white-space: nowrap;
+}
+.intelligence-principles p {
+  color: #c4bbac;
+}
+.hardware-stage .hardware-scene__topline span:last-child,
+.hardware-stage .hardware-scene__hint {
+  color: #756049;
+}
+.hardware-stage .hardware-scene__controls button {
+  color: #6e563c;
+}
+.hardware-stage .hardware-scene__controls button[aria-pressed="true"] {
+  color: #fff8ec;
+}
+.hardware-bottomline a {
+  color: #6c563c;
+}
+.hardware-stage .hardware-scene__topline {
+  font-size: 9px;
+}
+.hardware-stage .hardware-scene__hint {
+  font-size: 9px;
+}
+.contact-dialog label {
+  color: #6f604b;
+}
+.form-note {
+  color: #766750;
+}
+.contact-dialog input::placeholder {
+  color: #86775f;
+}
+.form-feedback {
+  color: #4c5e37;
+}
+.faq-item p {
+  color: #756651;
+}
+.footer-bottom button,
+.footer-bottom a {
+  color: #786b57;
+}
+.assistant-status {
+  font-size: 9px;
+}
+.assistant-credit > span:last-child {
+  font-size: 9px;
+}
+.prompt-chips button {
+  font-size: 11px;
+}
+.assistant-input input {
+  font-size: 13px;
+}
+.assistant-disclaimer {
+  font-size: 9px;
+}
+.answer-source {
+  font-size: 9px;
+}
+.followup-button {
+  font-size: 11px;
+}
+.hero .claude-credit {
+  font-size: 10px;
+}
+.hero .claude-credit img {
+  width: 75px;
+  max-height: 13px;
+}
+.hero-category,
+.report-button,
+.detail-sub strong,
+.chart-rule span,
+.workspace-caption,
+.assistant-evidence > div:first-child,
+.evidence-axis,
+.hardware-features small,
+.hardware-bottomline .mono {
+  color: #70604b;
+}
+.detail-metric small {
+  color: #5e7544;
+}
+.workspace-caption .mono {
+  color: inherit;
+}
+@media (min-width: 761px) and (max-width: 960px) {
+  .hero-scene-frame {
+    width: calc(100% + 48px);
+  }
+}
+@media (max-width: 960px) {
+  .demo-tag {
+    font-size: 8px;
+  }
+  .workspace-toolbar [role="tab"] {
+    font-size: 10px;
+  }
+  .summary-strip > div > span {
+    font-size: 9px;
+  }
+  .summary-strip small {
+    font-size: 8px;
+  }
+  .panel-title h4 {
+    font-size: 11px;
+  }
+  .detail-metric > span {
+    font-size: 9px;
+  }
+  .detail-sub {
+    font-size: 8px;
+  }
+  .detail-metric small {
+    font-size: 8px;
+  }
+  .chart-head {
+    font-size: 9px;
+  }
+  .chart-head .mono,
+  .chart-axis {
+    font-size: 7px;
+  }
+  .assistant-brand {
+    font-size: 12px;
+  }
+  .assistant-status {
+    font-size: 7px;
+  }
+  .assistant-credit .claude-credit {
+    font-size: 9px;
+  }
+  .assistant-credit > span:last-child {
+    font-size: 7px;
+  }
+  .prompt-chips button {
+    font-size: 9px;
+  }
+  .assistant-answer > h4 {
+    font-size: 24px;
+  }
+  .assistant-answer > p {
+    font-size: 11px;
+  }
+  .assistant-answer .assistant-note {
+    font-size: 10px;
+  }
+  .answer-source {
+    font-size: 7px;
+  }
+  .assistant-answer {
+    min-height: 405px;
+  }
+  .assistant-input input {
+    font-size: 11px;
+  }
+  .assistant-disclaimer {
+    font-size: 7px;
+  }
+  .assistant-evidence > div:first-child,
+  .assistant-evidence .mono {
+    font-size: 7px;
+  }
+  .equipment-row {
+    font-size: 10px;
+  }
+  .equipment-row em {
+    font-size: 8px;
+  }
+  .equipment-row b,
+  .equipment-row > span:last-child {
+    font-size: 9px;
+  }
+  .planning-insight p,
+  .locations-bottom p {
+    font-size: 10px;
+  }
+  .planning-insight > .eyebrow {
+    font-size: 7px;
+  }
+}
+@media (max-width: 760px) {
+  .workspace-heading .eyebrow {
+    font-size: 7px;
+  }
+  .workspace-location {
+    font-size: 10px;
+  }
+  .demo-tag {
+    font-size: 7px;
+    max-width: 154px;
+  }
+  .workspace-toolbar [role="tab"] {
+    font-size: 9px;
+  }
+  .sample-period {
+    font-size: 8px;
+    padding: 6px;
+  }
+  .summary-strip > div > span {
+    font-size: 8px;
+    max-width: 90px;
+  }
+  .summary-strip small {
+    font-size: 8px;
+  }
+  .panel-title h4 {
+    font-size: 12px;
+  }
+  .equipment-detail .eyebrow {
+    font-size: 8px;
+  }
+  .detail-metric > span {
+    font-size: 10px;
+  }
+  .detail-metric small {
+    font-size: 9px;
+  }
+  .detail-metric small span {
+    font-size: 8px;
+  }
+  .detail-sub {
+    font-size: 9px;
+  }
+  .fineprint {
+    font-size: 9px !important;
+  }
+  .chart-head {
+    font-size: 10px;
+  }
+  .chart-head .mono {
+    font-size: 7px;
+  }
+  .chart-axis {
+    font-size: 8px;
+  }
+  .bar-chart {
+    height: 85px;
+  }
+  .activity-chart {
+    min-height: 155px;
+  }
+  .planning-table .panel-title h4 {
+    font-size: 11px;
+    max-width: 150px;
+  }
+  .segmented button {
+    font-size: 7px;
+  }
+  .equipment-row {
+    font-size: 10px;
+  }
+  .table-labels {
+    font-size: 8px;
+  }
+  .equipment-row em {
+    font-size: 8px;
+  }
+  .equipment-row b,
+  .equipment-row > span:last-child {
+    font-size: 9px;
+  }
+  .planning-insight > .eyebrow {
+    font-size: 8px;
+  }
+  .planning-insight p {
+    font-size: 10px;
+  }
+  .insight-source {
+    font-size: 8px;
+  }
+  .location-card p {
+    font-size: 8px;
+    min-height: 26px;
+  }
+  .location-card > span {
+    font-size: 7px;
+  }
+  .location-card small {
+    font-size: 6px;
+  }
+  .locations-bottom p {
+    font-size: 11px;
+  }
+  .locations-bottom .eyebrow {
+    font-size: 8px;
+  }
+  .assistant-nav {
+    padding: 17px;
+  }
+  .assistant-credit {
+    padding-left: 17px;
+    padding-right: 17px;
+  }
+  .assistant-credit .claude-credit {
+    font-size: 8px;
+  }
+  .assistant-credit > span:last-child {
+    font-size: 7px;
+  }
+  .prompt-chips {
+    padding-left: 17px;
+    padding-right: 17px;
+  }
+  .prompt-chips button {
+    font-size: 9px;
+    padding: 8px 10px;
+  }
+  .assistant-answer {
+    padding: 23px 21px 18px;
+    min-height: 405px;
+  }
+  .assistant-answer > h4 {
+    font-size: 25px;
+  }
+  .assistant-answer > p {
+    font-size: 12px;
+  }
+  .assistant-answer .assistant-note {
+    font-size: 11px;
+  }
+  .answer-source {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+  .assistant-answer > .eyebrow {
+    font-size: 8px;
+  }
+  .assistant-evidence > div:first-child,
+  .assistant-evidence .mono {
+    font-size: 7px;
+  }
+  .assistant-disclaimer {
+    font-size: 7px;
+  }
+  .assistant-input {
+    margin: 0 17px;
+  }
+  .assistant-input input {
+    font-size: 11px;
+  }
+  .evidence-axis {
+    font-size: 6px !important;
+  }
+  .claude-credit {
+    font-size: 9px;
+  }
+  .hardware-stage .hardware-scene__topline {
+    font-size: 8px;
+  }
+  .hardware-stage .hardware-scene__hint {
+    font-size: 8px;
+  }
+}
+@media (max-width: 380px) {
+  .workspace-toolbar [role="tablist"] {
+    gap: 10px;
+  }
+  .workspace-toolbar [role="tab"] {
+    font-size: 8px;
+  }
+  .sample-period {
+    font-size: 7px;
+    padding: 6px;
+  }
+  .demo-tag {
+    font-size: 6px;
+    max-width: 135px;
+  }
+  .summary-strip > div > span {
+    font-size: 7px;
+  }
+  .summary-strip small {
+    font-size: 7px;
+  }
+  .planning-table .panel-title h4 {
+    font-size: 10px;
+    max-width: 125px;
+  }
+  .segmented button {
+    font-size: 6px;
+  }
+  .equipment-row {
+    font-size: 9px;
+  }
+  .equipment-row em {
+    font-size: 7px;
+  }
+  .equipment-row b,
+  .equipment-row > span:last-child {
+    font-size: 8px;
+  }
+  .location-card p {
+    font-size: 7px;
+  }
+  .assistant-credit > span:last-child {
+    font-size: 6px;
+  }
+  .assistant-credit .claude-credit {
+    font-size: 7px;
+  }
+  .prompt-chips button {
+    font-size: 8px;
+  }
+  .assistant-answer > p {
+    font-size: 11px;
+  }
+  .assistant-answer .assistant-note {
+    font-size: 10px;
+  }
+  .answer-source {
+    font-size: 7px;
+  }
+  .assistant-evidence > div:first-child,
+  .assistant-evidence .mono {
+    font-size: 6px;
+  }
+  .assistant-disclaimer {
+    font-size: 6px;
+  }
+  .assistant-input input {
+    font-size: 10px;
+  }
+}
+@media (max-width: 760px) {
+  .prompt-chips button {
+    font-size: 11px;
+    min-height: 35px;
+  }
+  .assistant-input input {
+    font-size: 16px;
+  }
+  .assistant-status {
+    font-size: 9px;
+  }
+  .assistant-credit > span:last-child {
+    font-size: 8px;
+    max-width: 105px;
+    text-align: right;
+    line-height: 1.5;
+  }
+  .assistant-credit .claude-credit {
+    font-size: 9px;
+    gap: 6px;
+  }
+  .assistant-credit .claude-credit img {
+    width: 56px;
+    padding-left: 7px;
+  }
+  .assistant-disclaimer {
+    font-size: 9px;
+    line-height: 1.7;
+    padding: 12px 20px;
+  }
+  .answer-source {
+    font-size: 9px;
+    line-height: 1.7;
+  }
+  .assistant-answer > p {
+    font-size: 12px;
+  }
+  .assistant-answer .assistant-note {
+    font-size: 11px;
+  }
+  .assistant-evidence > div:first-child,
+  .assistant-evidence .mono {
+    font-size: 8px;
+  }
+  .followup-button {
+    font-size: 11px;
+    min-height: 36px;
+  }
+  .contact-dialog input,
+  .contact-dialog select {
+    font-size: 16px;
+  }
+  .contact-dialog label {
+    font-size: 12px;
+  }
+  .form-note {
+    font-size: 10px;
+  }
+  .form-feedback,
+  .form-feedback button {
+    font-size: 12px;
+  }
+  .intelligence-copy h2 br:first-child {
+    display: block;
+  }
+}

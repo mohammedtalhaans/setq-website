@@ -1,0 +1,545 @@
+.claude-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 9px;
+  color: #91846f;
+}
+.claude-credit img {
+  width: 70px;
+  height: auto;
+  opacity: 0.65;
+  object-fit: contain;
+  border-left: 1px solid #d3c9b8;
+  padding-left: 13px;
+  box-sizing: content-box;
+  max-height: 12px;
+}
+.claude-credit.dark {
+  color: #bcb09b;
+}
+.claude-credit.dark img {
+  filter: invert(1);
+  opacity: 0.75;
+  border-color: #8c7c67;
+}
+.claude-credit.compact {
+  font-size: 8px;
+  gap: 10px;
+}
+.claude-credit.compact img {
+  width: 62px;
+  padding-left: 10px;
+  max-height: 10px;
+}
+.intelligence-demo {
+  background: #f5f2eb;
+  border: 1px solid #cabfaa;
+  border-radius: 9px;
+  box-shadow: 0 25px 60px #20190c24;
+  overflow: hidden;
+  color: #665439;
+  position: relative;
+}
+.assistant-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #ded4c2;
+  padding: 17px 21px;
+}
+.assistant-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b5437;
+}
+.q-glyph {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  color: #725f46;
+}
+.assistant-status {
+  font-family: var(--mono);
+  font-size: 6px;
+  border: 1px solid #dacfb9;
+  padding: 4px 6px;
+  border-radius: 3px;
+  color: #a19075;
+  letter-spacing: 0.1px;
+}
+.assistant-credit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 21px 2px;
+}
+.assistant-credit > span:last-child {
+  font-size: 7px;
+  color: #aa9a7e;
+}
+.prompt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 17px 21px 0;
+}
+.prompt-chips button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f9f6ee;
+  border: 1px solid #ddd1bc;
+  border-radius: 20px;
+  padding: 7px 10px;
+  font-size: 8px;
+  color: #948264;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.prompt-chips button[aria-pressed="true"] {
+  background: #e5e9da;
+  border-color: #bbc6a3;
+  color: #718155;
+}
+.prompt-chips button:hover {
+  background: #e9e5d9;
+}
+.prompt-chips svg {
+  width: 11px;
+  height: 11px;
+}
+.assistant-answer {
+  padding: 22px 24px 17px;
+  min-height: 370px;
+}
+.assistant-answer > .eyebrow {
+  font-size: 6px;
+  letter-spacing: 0.8px;
+  color: #af9e82;
+  margin-bottom: 12px;
+}
+.assistant-answer > h4 {
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+  color: #6b5234;
+  max-width: 340px;
+  margin-bottom: 15px;
+}
+.assistant-answer > p {
+  font-size: 10px;
+  line-height: 1.85;
+  color: #978061;
+}
+.assistant-evidence {
+  background: #eae5d8;
+  border: 1px solid #ded4c1;
+  border-radius: 5px;
+  padding: 13px 14px;
+  margin: 16px 0;
+}
+.assistant-evidence > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 6px;
+  color: #a59070;
+  margin-bottom: 12px;
+}
+.assistant-evidence .mono {
+  font-size: 6px;
+  letter-spacing: 0.5px;
+}
+.evidence-bars {
+  height: 49px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  position: relative;
+  border-bottom: 1px solid #d5c8b1;
+  background: repeating-linear-gradient(
+    to top,
+    transparent 0px,
+    transparent 15px,
+    #ddd3bf 16px,
+    transparent 17px
+  );
+}
+.evidence-bars > div {
+  flex: 1;
+  background: #b0ba9b;
+  position: relative;
+  border-radius: 2px 2px 0 0;
+  min-height: 6px;
+}
+.evidence-bars > div:last-child {
+  background: #86966e;
+}
+.evidence-bars i {
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  top: 0;
+  background: #97a482;
+}
+.evidence-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 5px !important;
+  color: #b09b7b;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+.assistant-answer .assistant-note {
+  font-size: 9px;
+  line-height: 1.8;
+  margin-top: 0;
+  margin-bottom: 14px;
+  color: #a08b6e;
+}
+.answer-source {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 6px;
+  color: #b4a083;
+  margin-bottom: 14px;
+}
+.answer-source svg {
+  width: 10px;
+  height: 10px;
+}
+.followup-button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #eee9dd;
+  border: 1px solid #daceb7;
+  padding: 8px 10px;
+  border-radius: 4px;
+  color: #8d7655;
+  font-size: 8px;
+}
+.followup-button:hover {
+  background: #e9e4d6;
+}
+.followup-button.followed {
+  background: #e5e9d9;
+  border-color: #bfcaab;
+  color: #718154;
+}
+.followup-feedback {
+  display: block;
+  margin-top: 8px;
+  font-size: 7px;
+  line-height: 1.6;
+  color: #a08c6a;
+}
+.assistant-input {
+  margin: 0 21px 0;
+  display: flex;
+  align-items: center;
+  background: #fffdf8;
+  border: 1px solid #d9ceb8;
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow: 0 2px 4px #66543905;
+}
+.assistant-input input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 8px 8px;
+  font-size: 10px;
+  color: #756043;
+}
+.assistant-input input::placeholder {
+  color: #b2a28a;
+}
+.assistant-input:focus-within {
+  outline: 2px solid #9bac82;
+  outline-offset: 3px;
+}
+.assistant-input input:focus-visible {
+  outline: none;
+}
+.assistant-input button {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: #765c3e;
+  color: #f5f2eb;
+  border-radius: 4px;
+}
+.assistant-disclaimer {
+  text-align: center;
+  font-size: 6px;
+  line-height: 1.6;
+  color: #b3a184;
+  padding: 9px 13px 15px;
+}
+.thinking-label {
+  font-size: 9px;
+  color: #a08b6c;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 9px;
+  min-height: 295px;
+  justify-content: center;
+}
+.thinking-label > span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #9aaa83;
+  animation: think-pulse 0.8s ease-in-out infinite alternate;
+}
+.thinking-label > span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.thinking-label > span:nth-child(3) {
+  animation-delay: 0.3s;
+  margin-right: 5px;
+}
+@keyframes think-pulse {
+  to {
+    opacity: 0.25;
+    transform: translateY(-3px);
+  }
+}
+@media (max-width: 960px) {
+  .claude-credit {
+    font-size: 8px;
+    gap: 10px;
+  }
+  .claude-credit img {
+    width: 62px;
+    padding-left: 10px;
+    max-height: 10px;
+  }
+  .assistant-nav {
+    padding: 15px 17px;
+  }
+  .assistant-brand {
+    font-size: 10px;
+    gap: 7px;
+  }
+  .assistant-status {
+    font-size: 5px;
+    padding: 4px 5px;
+  }
+  .assistant-credit {
+    padding: 11px 17px 0;
+  }
+  .assistant-credit .claude-credit {
+    font-size: 7px;
+    gap: 7px;
+  }
+  .assistant-credit .claude-credit img {
+    width: 55px;
+    padding-left: 8px;
+  }
+  .assistant-credit > span:last-child {
+    font-size: 6px;
+  }
+  .prompt-chips {
+    padding: 16px 17px 0;
+    gap: 5px;
+  }
+  .prompt-chips button {
+    font-size: 7px;
+    gap: 6px;
+    padding: 7px 9px;
+  }
+  .assistant-answer {
+    padding: 19px 20px 16px;
+    min-height: 360px;
+  }
+  .assistant-answer > h4 {
+    font-size: 21px;
+  }
+  .assistant-answer > p {
+    font-size: 9px;
+  }
+  .assistant-answer .assistant-note {
+    font-size: 8px;
+  }
+  .answer-source {
+    font-size: 5px;
+  }
+  .assistant-input {
+    margin-left: 17px;
+    margin-right: 17px;
+  }
+  .assistant-input input {
+    font-size: 9px;
+  }
+  .assistant-disclaimer {
+    font-size: 5px;
+    padding: 9px 10px 13px;
+  }
+  .followup-button {
+    font-size: 7px;
+  }
+  .assistant-evidence {
+    padding: 12px;
+    margin: 15px 0;
+  }
+  .evidence-bars {
+    gap: 10px;
+  }
+}
+@media (max-width: 760px) {
+  .claude-credit {
+    font-size: 8px;
+    gap: 11px;
+  }
+  .claude-credit img {
+    width: 65px;
+    padding-left: 11px;
+    max-height: 11px;
+  }
+  .intelligence-demo {
+    border-radius: 8px;
+  }
+  .assistant-nav {
+    padding: 17px 17px;
+  }
+  .assistant-brand {
+    font-size: 11px;
+  }
+  .assistant-status {
+    font-size: 6px;
+  }
+  .assistant-credit {
+    padding: 13px 17px 1px;
+  }
+  .assistant-credit .claude-credit {
+    font-size: 8px;
+  }
+  .assistant-credit > span:last-child {
+    font-size: 6px;
+  }
+  .assistant-credit .claude-credit img {
+    width: 60px;
+    max-height: 10px;
+  }
+  .prompt-chips {
+    padding: 16px 17px 0;
+    gap: 6px;
+  }
+  .prompt-chips button {
+    font-size: 7px;
+    padding: 8px 9px;
+    gap: 6px;
+  }
+  .assistant-answer {
+    padding: 22px 21px 18px;
+    min-height: 370px;
+  }
+  .assistant-answer > h4 {
+    font-size: 24px;
+    letter-spacing: -0.6px;
+    margin-bottom: 15px;
+  }
+  .assistant-answer > .eyebrow {
+    font-size: 6px;
+    margin-bottom: 12px;
+  }
+  .assistant-answer > p {
+    font-size: 10px;
+    line-height: 1.85;
+  }
+  .assistant-evidence {
+    margin: 16px 0;
+    padding: 13px;
+  }
+  .assistant-evidence > div:first-child {
+    font-size: 6px;
+  }
+  .assistant-answer .assistant-note {
+    font-size: 9px;
+    line-height: 1.85;
+    margin-bottom: 14px;
+  }
+  .answer-source {
+    font-size: 6px;
+    margin-bottom: 15px;
+  }
+  .followup-button {
+    font-size: 8px;
+    padding: 9px 11px;
+  }
+  .assistant-input {
+    margin-left: 17px;
+    margin-right: 17px;
+    padding: 6px;
+  }
+  .assistant-input input {
+    font-size: 9px;
+    padding-left: 8px;
+  }
+  .assistant-disclaimer {
+    font-size: 6px;
+    padding-top: 10px;
+    padding-bottom: 14px;
+  }
+  .followup-feedback {
+    font-size: 7px;
+  }
+}
+@media (max-width: 380px) {
+  .assistant-credit .claude-credit {
+    font-size: 7px;
+  }
+  .assistant-credit > span:last-child {
+    font-size: 5px;
+  }
+  .assistant-credit .claude-credit img {
+    width: 53px;
+  }
+  .assistant-brand {
+    font-size: 10px;
+  }
+  .assistant-status {
+    font-size: 5px;
+  }
+  .assistant-answer > h4 {
+    font-size: 22px;
+  }
+  .assistant-answer > p {
+    font-size: 9px;
+  }
+  .assistant-answer .assistant-note {
+    font-size: 8px;
+  }
+  .answer-source {
+    font-size: 5px;
+  }
+  .assistant-evidence > div:first-child {
+    font-size: 5px;
+  }
+  .prompt-chips button {
+    font-size: 6px;
+  }
+  .assistant-input input {
+    font-size: 8px;
+  }
+  .assistant-disclaimer {
+    font-size: 5px;
+  }
+}
