@@ -139,12 +139,10 @@ try {
     1,
   );
   const availability = await page.locator("#faq-4").textContent();
-  assert.match(
-    availability,
-    /Multiple selected gyms are already using SetQ technology/,
-  );
+  assert.match(availability, /SetQ is in its pilot phase/);
   assert.match(availability, /limited to Australia/);
-  assert.match(availability, /queued due to high demand/);
+  assert.match(availability, /request a pilot place/);
+  assert.doesNotMatch(availability, /already using/);
   await page
     .getByRole("button", { name: "Book a demo", exact: true })
     .first()

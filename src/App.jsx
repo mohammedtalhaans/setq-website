@@ -273,7 +273,7 @@ const faqs = [
   ],
   [
     "Can we use the platform today?",
-    "Multiple selected gyms are already using SetQ technology. Availability is currently limited to Australia, with new installations queued due to high demand. Book a demo to discuss your gym and request a place in the queue.",
+    "SetQ is in its pilot phase. We’re preparing our first full-floor installations in Melbourne, and availability is currently limited to Australia. Book a demo to discuss your gym and request a pilot place.",
   ],
   [
     "How is pricing structured?",
